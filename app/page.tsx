@@ -1,3 +1,7 @@
 export default function Home() {
-	return <p className="text-3xl h-full justify-center items-center">Do it.</p>;
+	return (
+		<div className="text-3xl h-full flex justify-center items-center flex-wrap">
+			Do It
+		</div>
+	);
 }
