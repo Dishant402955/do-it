@@ -1,13 +1,8 @@
-import {
-	SignedIn,
-	SignedOut,
-	SignInButton,
-	SignUpButton,
-	UserButton,
-} from "@clerk/nextjs";
+import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import { ModeToggle } from "@/components/mode-toggle";
 import { Button } from "@/components/ui/button";
 import Logo from "@/components/logo";
+import Link from "next/link";
 
 const Navbar = () => {
 	return (
@@ -19,12 +14,12 @@ const Navbar = () => {
 				<ModeToggle />
 				<SignedOut>
 					<div className="space-x-8">
-						<SignInButton>
+						<Link href={"sign-in"}>
 							<Button variant={"ghost"}>Login</Button>
-						</SignInButton>
-						<SignUpButton>
+						</Link>
+						<Link href={"sign-up"}>
 							<Button>Do It for Free!</Button>
-						</SignUpButton>
+						</Link>
 					</div>
 				</SignedOut>
 				<SignedIn>
