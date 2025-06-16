@@ -1,8 +1,9 @@
-import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
+import { SignedIn, SignedOut } from "@clerk/nextjs";
 import { ModeToggle } from "@/components/mode-toggle";
 import { Button } from "@/components/ui/button";
 import Logo from "@/components/logo";
 import Link from "next/link";
+import User from "@/components/user";
 
 const Navbar = () => {
 	return (
@@ -23,7 +24,7 @@ const Navbar = () => {
 					</div>
 				</SignedOut>
 				<SignedIn>
-					<UserButton />
+					<User />
 				</SignedIn>
 			</div>
 		</header>

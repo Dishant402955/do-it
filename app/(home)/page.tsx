@@ -23,7 +23,10 @@ const Home = async () => {
 			</SignedOut>
 			<SignedIn>
 				<Button asChild size={"lg"} className="p-0">
-					<Link href={orgId ? `org/${orgId}` : "/select-org"}>
+					<Link
+						href={orgId ? `org/${orgId}` : "/select-org"}
+						className="px-8 py-4 text-xl"
+					>
 						Go to Dashboard!
 					</Link>
 				</Button>
