@@ -10,7 +10,7 @@ export default function RootLayout({
 	return (
 		<main className="h-full w-full">
 			<Navbar />
-			<div className="pt-25 w-full h-full pb-25">{children}</div>
+			<div className="w-full h-full">{children}</div>
 			<Footer />
 		</main>
 	);

@@ -8,10 +8,14 @@ const Home = async () => {
 	const { orgId } = await auth();
 
 	return (
-		<div className="h-full w-full flex flex-col justify-center items-center gap-y-8">
-			<div className="flex flex-col justify-center items-center gap-1">
-				<h1 className="font-bold text-3xl">DO IT.</h1>
-				<p className="text-2xl">Start Your Journey with Us Right Now!</p>
+		<div className="pt-24 pb-16 h-full w-full flex flex-col justify-start items-center gap-y-4">
+			<div className="flex flex-col justify-center items-center">
+				<img
+					src="/images/image-DT4sJJnTChL2MZOpzyhzOr5UOm00Qh.png"
+					height={300}
+					width={300}
+				/>
+				<p className="text-2xl">Do it with Us Right Now!</p>
 			</div>
 
 			<SignedOut>
