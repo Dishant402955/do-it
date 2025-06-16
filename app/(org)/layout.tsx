@@ -9,7 +9,6 @@ export default function RootLayout({
 }>) {
 	return (
 		<main className="h-full w-full">
-			<OrgControl />
 			<Navbar />
 
 			<div className="w-full h-full">{children}</div>

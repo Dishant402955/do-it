@@ -1,12 +1,9 @@
-import {
-	OrganizationSwitcher,
-	SignedIn,
-	SignedOut,
-	UserButton,
-} from "@clerk/nextjs";
+import { OrganizationSwitcher, UserButton } from "@clerk/nextjs";
 import { ModeToggle } from "@/components/mode-toggle";
 import { Button } from "@/components/ui/button";
 import Logo from "@/components/logo";
+import User from "@/components/user";
+import OrgSwitch from "@/components/org-switch";
 
 const Navbar = () => {
 	return (
@@ -17,8 +14,8 @@ const Navbar = () => {
 			</div>
 			<div className="flex justify-center items-center gap-x-4">
 				<ModeToggle />
-				<OrganizationSwitcher />
-				<UserButton />
+				<OrgSwitch />
+				<User />
 			</div>
 		</header>
 	);

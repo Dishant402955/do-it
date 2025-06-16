@@ -6,9 +6,10 @@ import { useEffect } from "react";
 
 const OrgControl = () => {
 	const params = useParams();
-	const { setActive } = useOrganizationList();
+	const { setActive, isLoaded } = useOrganizationList();
 
 	useEffect(() => {
+		if (!isLoaded) return;
 		if (!setActive) return;
 
 		setActive({

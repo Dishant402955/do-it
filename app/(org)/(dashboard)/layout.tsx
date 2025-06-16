@@ -1,5 +1,6 @@
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
+import OrgControl from "@/components/org-control";
 
 export default function RootLayout({
 	children,
@@ -7,10 +8,13 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<SidebarProvider>
-			<AppSidebar />
-			<SidebarTrigger className="mt-16" />
-			<main className="bg-amber-400 mt-16 w-full">{children}</main>
-		</SidebarProvider>
+		<>
+			<SidebarProvider>
+				<AppSidebar />
+				<SidebarTrigger className="mt-16" />
+				<main className=" mt-16 w-full">{children}</main>
+			</SidebarProvider>
+			{/* <OrgControl /> */}
+		</>
 	);
 }
