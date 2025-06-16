@@ -15,32 +15,8 @@ import Link from "next/link";
 import { useOrganizationList } from "@clerk/nextjs";
 import Image from "next/image";
 
-const items = [
-	{
-		title: "Boards",
-		url: "/org/boards",
-		icon: CircuitBoardIcon,
-	},
-	{
-		title: "Activity",
-		url: "/org/activity",
-		icon: ActivityIcon,
-	},
-	{
-		title: "Settings",
-		url: "/org/settings",
-		icon: Settings,
-	},
-	{
-		title: "Billings",
-		url: "/org/billings",
-		icon: CreditCard,
-	},
-];
-
 const Orgs = () => {
-	const { open } = useSidebar();
-	const { userMemberships, isLoaded } = useOrganizationList({
+	const { userMemberships, isLoaded, setActive } = useOrganizationList({
 		userMemberships: {
 			infinite: true,
 		},
@@ -49,12 +25,36 @@ const Orgs = () => {
 	if (!isLoaded) {
 		return <p>Loading...</p>;
 	}
-	const { data } = userMemberships;
 
+	const items = [
+		{
+			title: "Boards",
+			url: ``,
+			icon: CircuitBoardIcon,
+		},
+		{
+			title: "Activity",
+			url: `activity`,
+			icon: ActivityIcon,
+		},
+		{
+			title: "Settings",
+			url: `settings`,
+			icon: Settings,
+		},
+		{
+			title: "Billings",
+			url: `billings`,
+			icon: CreditCard,
+		},
+	];
+
+	const { data } = userMemberships;
 	if (!data) {
 		return <p>No Orgs</p>;
 	}
 
+	const { open } = useSidebar();
 	return (
 		<Accordion type="single" collapsible className="mt-4">
 			{data.map((org: any, index: number) => (
@@ -77,7 +77,10 @@ const Orgs = () => {
 										className={`w-full flex justify-start items-center gap-4 hover:bg-accent`}
 									>
 										<Link
-											href={item.url}
+											href={`/org/${org.organization.id}/${item.url}`}
+											onClick={() => {
+												setActive({ organization: org.organization.id });
+											}}
 											className={`flex gap-4 size-full  ${
 												open
 													? "p-2 pl-3"
