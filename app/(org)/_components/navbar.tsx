@@ -7,7 +7,6 @@ import {
 import { ModeToggle } from "@/components/mode-toggle";
 import { Button } from "@/components/ui/button";
 import Logo from "@/components/logo";
-import Link from "next/link";
 
 const Navbar = () => {
 	return (
