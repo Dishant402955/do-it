@@ -1,5 +1,3 @@
-import { Calendar, Ghost, Home, Inbox, Search, Settings } from "lucide-react";
-
 import {
 	Sidebar,
 	SidebarContent,
@@ -7,39 +5,10 @@ import {
 	SidebarGroupContent,
 	SidebarGroupLabel,
 	SidebarMenu,
-	SidebarMenuButton,
 	SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { Button } from "./ui/button";
-
-// Menu items.
-const items = [
-	{
-		title: "Home",
-		url: "#",
-		icon: Home,
-	},
-	{
-		title: "Inbox",
-		url: "#",
-		icon: Inbox,
-	},
-	{
-		title: "Calendar",
-		url: "#",
-		icon: Calendar,
-	},
-	{
-		title: "Search",
-		url: "#",
-		icon: Search,
-	},
-	{
-		title: "Settings",
-		url: "#",
-		icon: Settings,
-	},
-];
+import Orgs from "./orgs";
 
 export function AppSidebar() {
 	return (
@@ -54,31 +23,11 @@ export function AppSidebar() {
 					</SidebarGroupLabel>
 					<SidebarGroupContent>
 						<SidebarMenu>
-							{items.map((item) => (
-								<SidebarMenuItem key={item.title}>
-									<SidebarMenuButton asChild>
-										<a href={item.url}>
-											<item.icon />
-											<span>{item.title}</span>
-										</a>
-									</SidebarMenuButton>
-								</SidebarMenuItem>
-							))}
+							<Orgs />
 						</SidebarMenu>
 					</SidebarGroupContent>
 				</SidebarGroup>
 			</SidebarContent>
 		</Sidebar>
 	);
-}
-
-{
-	/* <Accordion type="single" collapsible>
-	<AccordionItem value="item-1">
-		<AccordionTrigger>Is it accessible?</AccordionTrigger>
-		<AccordionContent>
-			Yes. It adheres to the WAI-ARIA design pattern.
-		</AccordionContent>
-	</AccordionItem>
-</Accordion>; */
 }
