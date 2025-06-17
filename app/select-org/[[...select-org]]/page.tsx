@@ -2,12 +2,11 @@
 
 import Logo from "@/components/logo";
 import { ModeToggle } from "@/components/mode-toggle";
-import { OrganizationList, useAuth, useOrganization } from "@clerk/nextjs";
+import { OrganizationList, useAuth } from "@clerk/nextjs";
 import { dark, experimental__simple } from "@clerk/themes";
 import { useTheme } from "next-themes";
 
 const SelectOrg = () => {
-	const { organization } = useOrganization();
 	const { orgId } = useAuth();
 	const { theme } = useTheme();
 	return (

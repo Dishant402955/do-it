@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
-const Logo = ({ className }: { className?: string }) => {
+const Logo = () => {
 	return (
 		<Link href={"/"}>
 			<div className="flex gap-2 hover:bg-accent-foreground/10 p-2 rounded-lg">

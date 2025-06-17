@@ -8,7 +8,7 @@ import {
 	DialogTrigger,
 } from "@/components/ui/dialog";
 
-import { Building2Icon, User2Icon } from "lucide-react";
+import { Building2Icon } from "lucide-react";
 import Link from "next/link";
 
 const Page = () => {
