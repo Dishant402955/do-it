@@ -3,7 +3,6 @@
 import { OrganizationProfile, useOrganization } from "@clerk/nextjs";
 import { dark, experimental__simple } from "@clerk/themes";
 import { useTheme } from "next-themes";
-import React from "react";
 
 const SettingsPage = () => {
 	const { theme } = useTheme();

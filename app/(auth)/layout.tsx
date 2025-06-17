@@ -1,5 +1,4 @@
 import Logo from "@/components/logo";
-import "../globals.css";
 import { ModeToggle } from "@/components/mode-toggle";
 
 export default function RootLayout({

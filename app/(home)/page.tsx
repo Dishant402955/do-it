@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { SignedIn, SignedOut } from "@clerk/nextjs";
 import { auth } from "@clerk/nextjs/server";
+import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
@@ -10,10 +11,11 @@ const Home = async () => {
 	return (
 		<div className="pt-24 pb-16 h-full w-full flex flex-col justify-start items-center gap-y-4">
 			<div className="flex flex-col justify-center items-center">
-				<img
+				<Image
 					src="/images/image-DT4sJJnTChL2MZOpzyhzOr5UOm00Qh.png"
 					height={300}
 					width={300}
+					alt="Welcome"
 				/>
 				<p className="text-2xl">Do it with Us Right Now!</p>
 			</div>

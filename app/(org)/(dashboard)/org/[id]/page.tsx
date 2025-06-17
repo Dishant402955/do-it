@@ -1,7 +1,6 @@
 "use client";
 
 import Org from "@/components/org";
-import { Button } from "@/components/ui/button";
 import {
 	Dialog,
 	DialogContent,
