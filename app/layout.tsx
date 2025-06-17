@@ -11,6 +11,7 @@ import {
 import { ThemeProvider } from "@/components/theme-provider";
 import { ModeToggle } from "@/components/mode-toggle";
 import { Button } from "@/components/ui/button";
+import { Toaster } from "@/components/ui/sonner";
 
 export const metadata: Metadata = {
 	title: "Do it",
@@ -26,6 +27,7 @@ export default function RootLayout({
 		<ClerkProvider>
 			<html lang="en" suppressHydrationWarning>
 				<body className={`antialiased h-full w-full`}>
+					<Toaster />
 					<ThemeProvider
 						attribute="class"
 						defaultTheme="system"
