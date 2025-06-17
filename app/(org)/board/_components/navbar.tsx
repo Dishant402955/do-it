@@ -55,7 +55,7 @@ const Navbar = () => {
 	};
 
 	return (
-		<header className="fixed top-16 w-full flex justify-between items-center p-4 gap-4 h-16 shadow-accent-foreground/10 shadow dark:shadow-accent bg-neutral-800/10">
+		<header className="fixed top-16 w-full flex justify-between items-center p-4 gap-4 h-16 shadow-accent-foreground/10 shadow dark:shadow-accent">
 			<div className="flex justify-center items-center h-full ml-2 gap-4">
 				<Dialog>
 					<DialogTrigger>{organization?.name}</DialogTrigger>
