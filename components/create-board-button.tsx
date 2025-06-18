@@ -6,12 +6,16 @@ import {
 	DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "./ui/button";
+import React from "react";
 
-const CreateBoardButton = () => {
+const CreateBoardButton = ({ children }: { children?: React.ReactNode }) => {
 	return (
 		<Dialog>
 			<DialogTrigger asChild>
-				<Button>Create +</Button>
+				<span>
+					{children}
+					{children ? null : <Button>Create +</Button>}
+				</span>
 			</DialogTrigger>
 
 			<DialogContent className="flex flex-col justify-center items-center w-72 space-y-4">

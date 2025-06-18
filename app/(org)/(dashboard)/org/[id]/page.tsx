@@ -1,5 +1,6 @@
 "use client";
 
+import CreateBoardButton from "@/components/create-board-button";
 import Org from "@/components/org";
 import {
 	Dialog,
@@ -32,18 +33,11 @@ const Page = () => {
 			</div>
 
 			<div className="grid grid-cols-3 space-y-4 my-8 w-[80%] ml-20">
-				<Dialog>
-					<DialogTrigger>
-						<div className="h-56 w-64 rounded-lg bg-accent/50 flex justify-center items-center">
-							<p>Create +</p>
-						</div>
-					</DialogTrigger>
-
-					<DialogContent className="flex flex-col justify-center items-center w-72 space-y-4">
-						<DialogTitle>Create new board</DialogTitle>
-						<p>TODO : Create form for new board</p>
-					</DialogContent>
-				</Dialog>
+				<CreateBoardButton>
+					<div className="h-56 w-64 rounded-lg bg-accent/50 flex justify-center items-center">
+						<p>Create +</p>
+					</div>
+				</CreateBoardButton>
 				{boards.map(({ title, id }, index) => {
 					return (
 						<div className="h-56 w-64 rounded-lg bg-accent/50 p-0" key={index}>
