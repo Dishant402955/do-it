@@ -112,6 +112,7 @@ export const getListsByBoardId = async ({
 	id: string;
 }) => {
 	try {
+		console.log(id);
 		const res = await db.select().from(list).where(eq(list.boardId, boardId));
 
 		if (res.length >= 0) {

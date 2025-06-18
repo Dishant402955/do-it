@@ -5,7 +5,6 @@ import {
 	AlertDialogCancel,
 	AlertDialogContent,
 	AlertDialogTitle,
-	AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import {
@@ -66,7 +65,7 @@ const Navbar = () => {
 					</DropdownMenuTrigger>
 					<DropdownMenuContent>
 						<DropdownMenuItem
-							onSelect={(e) => {
+							onSelect={(e: Event) => {
 								e.preventDefault();
 							}}
 						>
@@ -85,7 +84,7 @@ const Navbar = () => {
 						</DropdownMenuItem>
 						<DropdownMenuItem
 							className="w-full"
-							onSelect={(e) => {
+							onSelect={() => {
 								requestAnimationFrame(() => setOpenAlert(true));
 							}}
 						>

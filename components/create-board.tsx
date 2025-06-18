@@ -2,7 +2,7 @@
 
 import CreateBoardButton from "./wrappers/create-board-button";
 
-const CreateBoard = ({ getTotalBoardsByOrgId, orgId }: any) => {
+const CreateBoard = () => {
 	// const remaining = getTotalBoardsByOrgId(orgId);
 	return (
 		<CreateBoardButton>

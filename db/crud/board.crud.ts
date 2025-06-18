@@ -2,7 +2,7 @@
 
 import { db } from "@/db/index";
 import { board } from "@/db/schema";
-import { count, eq, SQL } from "drizzle-orm";
+import { count, eq } from "drizzle-orm";
 
 export const createBoard = async ({
 	orgId,

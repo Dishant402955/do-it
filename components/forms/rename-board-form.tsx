@@ -15,20 +15,20 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
-import { useState, useTransition } from "react";
+import { useTransition } from "react";
 
 const formSchema = z.object({
 	title: z.string().min(1, { message: "Title is required!" }).max(100),
 });
 
 export function RenameBoardForm() {
-	const [boardTitle, setBoardTitle] = useState("");
+	// const [boardTitle, setBoardTitle] = useState("");
 	const [isLoading, startTransition] = useTransition();
 
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			title: boardTitle,
+			title: "",
 		},
 	});
 
@@ -52,8 +52,8 @@ export function RenameBoardForm() {
 								<Input
 									{...field}
 									className="w-full my-1"
-									value={boardTitle}
-									onChange={setBoardTitle as any}
+									// value={boardTitle}
+									// onChange={setBoardTitle}
 								/>
 							</FormControl>
 							<FormMessage />

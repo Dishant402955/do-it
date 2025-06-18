@@ -1,5 +1,4 @@
 import { ModeToggle } from "@/components/mode-toggle";
-import { Button } from "@/components/ui/button";
 import Logo from "@/components/logo";
 import User from "@/components/user";
 import OrgSwitch from "@/components/org-switch";

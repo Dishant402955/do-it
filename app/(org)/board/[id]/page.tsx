@@ -3,17 +3,6 @@ import List from "../_components/list";
 import CreateListButton from "@/components/wrappers/create-list-button";
 
 const Page = () => {
-	const lists = [
-		{
-			title: "one",
-			cards: [{ title: "oneone" }],
-		},
-		{
-			title: "two",
-			cards: [{ title: "twotwo" }],
-		},
-	];
-
 	return (
 		<div className="h-full w-full pt-32 flex justify-start items-center">
 			<Navbar />
@@ -24,9 +13,7 @@ const Page = () => {
 					</div>
 				</CreateListButton>
 
-				{lists.map((list, index) => {
-					return <List list={list} key={index} />;
-				})}
+				<List />
 			</div>
 		</div>
 	);

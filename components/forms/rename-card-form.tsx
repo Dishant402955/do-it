@@ -15,21 +15,22 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
-import { useState, useTransition } from "react";
+import { useTransition } from "react";
 
 const formSchema = z.object({
 	title: z.string().min(1, { message: "Title is required!" }).max(100),
 });
 
 export function RenameCardForm() {
-	const [cardTitle, setCardTitle] = useState("");
+	// const [cardTitle, setCardTitle] = useState("");
 
 	const [isLoading, startTransition] = useTransition();
 
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			title: cardTitle,
+			// title: cardTitle,
+			title: "",
 		},
 	});
 
@@ -53,8 +54,8 @@ export function RenameCardForm() {
 								<Input
 									{...field}
 									className="w-full my-1"
-									value={cardTitle}
-									onChange={setCardTitle as any}
+									// value={cardTitle}
+									// onChange={setCardTitle}
 								/>
 							</FormControl>
 							<FormMessage />
