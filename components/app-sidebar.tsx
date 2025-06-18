@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/sidebar";
 import { Button } from "./ui/button";
 import Orgs from "./orgs";
+import Link from "next/link";
 
 export function AppSidebar() {
 	return (
@@ -16,9 +17,11 @@ export function AppSidebar() {
 				<SidebarGroup>
 					<SidebarGroupLabel className="flex w-full items-center justify-between text-lg my-4">
 						<p>Workspaces</p>
-						<Button size={"sm"} variant={"outline"}>
-							+
-						</Button>
+						<Link href={"/create-org"} className="p-0">
+							<Button size={"sm"} variant={"outline"} className="size-full">
+								+
+							</Button>
+						</Link>
 					</SidebarGroupLabel>
 					<SidebarGroupContent>
 						<SidebarMenu>

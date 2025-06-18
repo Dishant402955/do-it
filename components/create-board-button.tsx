@@ -6,7 +6,6 @@ import {
 	DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "./ui/button";
-import { hello } from "@/db/crud/board.crud";
 
 const CreateBoardButton = () => {
 	return (
@@ -17,7 +16,7 @@ const CreateBoardButton = () => {
 
 			<DialogContent className="flex flex-col justify-center items-center w-72 space-y-4">
 				<DialogTitle>Create new board</DialogTitle>
-				<CreateBoardForm hello={hello} />
+				<CreateBoardForm />
 			</DialogContent>
 		</Dialog>
 	);

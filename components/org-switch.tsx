@@ -32,7 +32,8 @@ const OrgSwitch = () => {
 				afterSelectOrganizationUrl={`/org/${organization?.id}`}
 				afterCreateOrganizationUrl={`/org/${organization?.id}`}
 				afterLeaveOrganizationUrl="/select-org"
-				createOrganizationMode="modal"
+				createOrganizationMode="navigation"
+				createOrganizationUrl="/create-org"
 			/>
 		</>
 	);
