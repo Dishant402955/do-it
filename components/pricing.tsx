@@ -3,13 +3,18 @@
 import { useOrganization, PricingTable } from "@clerk/nextjs";
 import { dark, experimental__simple } from "@clerk/themes";
 import { useTheme } from "next-themes";
+import { redirect } from "next/navigation";
 
 const Pricing = () => {
 	const { theme } = useTheme();
-	const { isLoaded } = useOrganization();
+	const { isLoaded, organization } = useOrganization();
 
 	if (!isLoaded) {
 		return <p>Loading...</p>;
+	}
+
+	if (!organization) {
+		return redirect("/select-org");
 	}
 
 	return (
@@ -29,6 +34,7 @@ const Pricing = () => {
 					},
 				}}
 				forOrganizations
+				newSubscriptionRedirectUrl={`/org/${organization.id}`}
 			/>
 		</div>
 	);
