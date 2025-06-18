@@ -16,7 +16,12 @@ import {
 } from "@/components/ui/dropdown-menu";
 import RenameBoardButton from "@/components/wrappers/rename-board-button";
 import { useOrganization } from "@clerk/nextjs";
-import { MoreHorizontalIcon, Trash2Icon } from "lucide-react";
+import {
+	CopyIcon,
+	FileTextIcon,
+	MoreHorizontalIcon,
+	Trash2Icon,
+} from "lucide-react";
 import { redirect, useParams } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -33,11 +38,6 @@ const Navbar = () => {
 	if (!organization) {
 		return redirect("/select-org");
 	}
-
-	const handleSubmit = (formData: FormData) => {
-		console.log(formData);
-		toast.success(`Board  updated`);
-	};
 
 	const handleDelete = () => {
 		toast.success("delete called");
@@ -65,6 +65,24 @@ const Navbar = () => {
 						<MoreHorizontalIcon />
 					</DropdownMenuTrigger>
 					<DropdownMenuContent>
+						<DropdownMenuItem
+							onSelect={(e) => {
+								e.preventDefault();
+							}}
+						>
+							<RenameBoardButton>
+								<div className="w-full  flex justify-start items-center space-x-3">
+									<FileTextIcon />
+									<p>Rename</p>
+								</div>
+							</RenameBoardButton>
+						</DropdownMenuItem>
+						<DropdownMenuItem>
+							<div className="w-full  flex justify-start items-center space-x-3">
+								<CopyIcon />
+								<p>Copy</p>
+							</div>
+						</DropdownMenuItem>
 						<DropdownMenuItem
 							className="w-full"
 							onSelect={(e) => {
