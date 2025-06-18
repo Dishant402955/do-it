@@ -1,3 +1,5 @@
+"use server";
+
 import { db } from "@/db/index";
 import { board } from "@/db/schema";
 import { eq } from "drizzle-orm";
@@ -87,4 +89,8 @@ export const getBoardsByOrgId = async ({ orgId }: { orgId: string }) => {
 	} catch (error) {
 		return { error: "Error Retrieving Boards" };
 	}
+};
+
+export const hello = () => {
+	console.log("hello");
 };

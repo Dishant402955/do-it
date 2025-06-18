@@ -1,3 +1,5 @@
+"use server";
+
 import { db } from "@/db/index";
 import { desc, eq } from "drizzle-orm";
 import { list } from "../schema";

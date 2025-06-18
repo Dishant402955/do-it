@@ -1,3 +1,5 @@
+"use server";
+
 import { db } from "@/db/index";
 import { card } from "@/db/schema";
 import { desc, eq } from "drizzle-orm";
