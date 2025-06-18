@@ -68,6 +68,26 @@ export const UpdateListTitle = async ({
 	}
 };
 
+export const UpdateListOrder = async ({
+	order = 1,
+	id,
+}: {
+	order: number;
+	id: string;
+}) => {
+	try {
+		const res = await db
+			.update(list)
+			.set({ order, updatedAt: new Date(Date.now()).toDateString() });
+
+		if (res.rowCount >= 0) {
+			return { success: "List Order Updated" };
+		}
+	} catch (error) {
+		return { error: "Error Updating List Order" };
+	}
+};
+
 export const getListById = async ({ id }: { id: string }) => {
 	try {
 		const res = await db.select().from(list).where(eq(list.id, id));
