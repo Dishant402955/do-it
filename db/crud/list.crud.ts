@@ -58,7 +58,8 @@ export const UpdateListTitle = async ({
 	try {
 		const res = await db
 			.update(list)
-			.set({ title, updatedAt: new Date(Date.now()).toDateString() });
+			.set({ title, updatedAt: new Date(Date.now()).toDateString() })
+			.where(eq(list.id, id));
 
 		if (res.rowCount >= 0) {
 			return { success: "List Title Updated" };
@@ -78,7 +79,8 @@ export const UpdateListOrder = async ({
 	try {
 		const res = await db
 			.update(list)
-			.set({ order, updatedAt: new Date(Date.now()).toDateString() });
+			.set({ order, updatedAt: new Date(Date.now()).toDateString() })
+			.where(eq(list.id, id));
 
 		if (res.rowCount >= 0) {
 			return { success: "List Order Updated" };
