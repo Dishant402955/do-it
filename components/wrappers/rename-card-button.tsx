@@ -8,7 +8,7 @@ import {
 import { Button } from "../ui/button";
 import React from "react";
 
-const CreateCardButton = ({ children }: { children?: React.ReactNode }) => {
+const RenameCardButton = ({ children }: { children?: React.ReactNode }) => {
 	return (
 		<Dialog>
 			<DialogTrigger asChild>
@@ -26,4 +26,4 @@ const CreateCardButton = ({ children }: { children?: React.ReactNode }) => {
 	);
 };
 
-export default CreateCardButton;
+export default RenameCardButton;

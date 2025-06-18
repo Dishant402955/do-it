@@ -1,6 +1,6 @@
 "use client";
 
-import CreateBoardButton from "@/components/create-board-button";
+import CreateBoardButton from "@/components/wrappers/create-board-button";
 import Org from "@/components/org";
 import {
 	Dialog,

@@ -24,6 +24,8 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { useState } from "react";
 import CreateCardButton from "@/components/wrappers/create-card-button";
+import RenameListButton from "@/components/wrappers/rename-list-button";
+import RenameCardButton from "@/components/wrappers/rename-card-button";
 
 const List = ({ list }: any) => {
 	const [openAlertListDelete, setOpenAlertListDelete] = useState(false);
@@ -57,11 +59,17 @@ const List = ({ list }: any) => {
 							<MoreHorizontalIcon />
 						</DropdownMenuTrigger>
 						<DropdownMenuContent>
-							<DropdownMenuItem>
-								<div className="w-full  flex justify-start items-center space-x-3">
-									<FileTextIcon />
-									<p>Rename</p>
-								</div>
+							<DropdownMenuItem
+								onSelect={(e) => {
+									e.preventDefault();
+								}}
+							>
+								<RenameListButton>
+									<div className="w-full  flex justify-start items-center space-x-3">
+										<FileTextIcon />
+										<p>Rename</p>
+									</div>
+								</RenameListButton>
 							</DropdownMenuItem>
 							<DropdownMenuItem>
 								<div className="w-full  flex justify-start items-center space-x-3">
@@ -115,11 +123,17 @@ const List = ({ list }: any) => {
 										<MoreHorizontalIcon />
 									</DropdownMenuTrigger>
 									<DropdownMenuContent>
-										<DropdownMenuItem>
-											<div className="w-full  flex justify-start items-center space-x-3">
-												<FileTextIcon />
-												<p>Rename</p>
-											</div>
+										<DropdownMenuItem
+											onSelect={(e) => {
+												e.preventDefault();
+											}}
+										>
+											<RenameCardButton>
+												<div className="w-full  flex justify-start items-center space-x-3">
+													<FileTextIcon />
+													<p>Rename</p>
+												</div>
+											</RenameCardButton>
 										</DropdownMenuItem>
 										<DropdownMenuItem>
 											<div className="w-full  flex justify-start items-center space-x-3">

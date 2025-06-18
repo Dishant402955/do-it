@@ -9,24 +9,20 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import {
-	Dialog,
-	DialogContent,
-	DialogTitle,
-	DialogTrigger,
-} from "@/components/ui/dialog";
-import {
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import RenameBoardButton from "@/components/wrappers/rename-board-button";
 import { useOrganization } from "@clerk/nextjs";
 import { MoreHorizontalIcon, Trash2Icon } from "lucide-react";
-import { redirect } from "next/navigation";
+import { redirect, useParams } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 
 const Navbar = () => {
+	const params = useParams();
 	const { organization, isLoaded } = useOrganization();
 
 	const [openAlert, setOpenAlert] = useState(false);
@@ -57,25 +53,11 @@ const Navbar = () => {
 	return (
 		<header className="fixed top-16 w-full flex justify-between items-center p-4 gap-4 h-16 shadow-accent-foreground/10 shadow dark:shadow-accent">
 			<div className="flex justify-center items-center h-full ml-2 gap-4">
-				<Dialog>
-					<DialogTrigger>{organization?.name}</DialogTrigger>
-					<DialogContent>
-						<DialogTitle></DialogTitle>
-						<form
-							action={handleSubmit}
-							className="w-full flex flex-col justify-center items-center space-y-4"
-						>
-							<input
-								name="title"
-								id="title"
-								className="outline-none p-2 pl-4 rounded-lg w-full"
-							/>
-							<Button type="submit" className="w-full">
-								Update
-							</Button>
-						</form>
-					</DialogContent>
-				</Dialog>
+				<RenameBoardButton>
+					<Button variant={"outline"} size={"lg"}>
+						{params.id}
+					</Button>
+				</RenameBoardButton>
 			</div>
 			<div className="flex justify-center items-center gap-x-4">
 				<DropdownMenu>

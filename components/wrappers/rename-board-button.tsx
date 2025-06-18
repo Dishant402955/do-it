@@ -8,7 +8,7 @@ import {
 import { Button } from "../ui/button";
 import React from "react";
 
-const CreateBoardButton = ({ children }: { children?: React.ReactNode }) => {
+const RenameBoardButton = ({ children }: { children?: React.ReactNode }) => {
 	return (
 		<Dialog>
 			<DialogTrigger asChild>
@@ -26,4 +26,4 @@ const CreateBoardButton = ({ children }: { children?: React.ReactNode }) => {
 	);
 };
 
-export default CreateBoardButton;
+export default RenameBoardButton;
