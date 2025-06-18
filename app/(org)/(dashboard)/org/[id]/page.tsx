@@ -1,12 +1,12 @@
-"use client";
-
-import CreateBoardButton from "@/components/wrappers/create-board-button";
 import Org from "@/components/org";
 
 import { Building2Icon } from "lucide-react";
 import Link from "next/link";
+import CreateBoard from "@/components/create-board";
+import { getTotalBoardsByOrgId } from "@/db/crud/board.crud";
+import { auth } from "@clerk/nextjs/server";
 
-const Page = () => {
+const Page = async () => {
 	const boards = [
 		{ title: "First", id: "1" },
 		{ title: "Second", id: "2" },
@@ -15,6 +15,9 @@ const Page = () => {
 		{ title: "Fifth", id: "5" },
 		{ title: "Sixth", id: "6" },
 	];
+
+	const { orgId } = await auth();
+
 	return (
 		<div className=" w-full h-full flex flex-col p-6">
 			<Org />
@@ -26,15 +29,14 @@ const Page = () => {
 				<p className="font-bold text-xl">Your Boards</p>
 			</div>
 
-			<div className="grid grid-cols-3 space-y-4 my-8 w-[80%] ml-20">
-				<CreateBoardButton>
-					<div className="h-56 w-64 rounded-lg bg-accent/50 flex justify-center items-center">
-						<p>Create +</p>
-					</div>
-				</CreateBoardButton>
+			<div className="grid grid-cols-5 space-y-4 my-8 w-[80%] ml-20">
+				<CreateBoard
+					getTotalBoardsByOrgId={getTotalBoardsByOrgId}
+					orgId={orgId}
+				/>
 				{boards.map(({ title, id }, index) => {
 					return (
-						<div className="h-56 w-64 rounded-lg bg-accent/50 p-0" key={index}>
+						<div className="h-36 w-44 rounded-lg bg-accent/50 p-0" key={index}>
 							<Link
 								href={`/board/${id}`}
 								className="size-full p-2 flex justify-center items-center"

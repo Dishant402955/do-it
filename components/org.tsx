@@ -27,10 +27,10 @@ const Org = () => {
 
 	return (
 		<div className="w-full flex gap-4 items-center">
-			<Image src={organization?.imageUrl} alt="org" height={40} width={40} />
-			<div className="flex flex-col">
-				<p>{organization.name}</p>
-				<p className="text-xs font-extralight">{plan}</p>
+			<Image src={organization?.imageUrl} alt="org" height={50} width={50} />
+			<div className="flex flex-col justify-between h-full">
+				<p className="text-lg">{organization.name}</p>
+				<p className="text-sm font-bold">{plan}</p>
 			</div>
 		</div>
 	);

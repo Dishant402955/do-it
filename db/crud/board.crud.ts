@@ -2,7 +2,7 @@
 
 import { db } from "@/db/index";
 import { board } from "@/db/schema";
-import { eq } from "drizzle-orm";
+import { count, eq, SQL } from "drizzle-orm";
 
 export const createBoard = async ({
 	orgId,
@@ -86,6 +86,19 @@ export const getBoardsByOrgId = async ({ orgId }: { orgId: string }) => {
 		if (res.length >= 0) {
 			return { success: "Retrieved Boards", data: { boards: res } };
 		}
+	} catch (error) {
+		return { error: "Error Retrieving Boards" };
+	}
+};
+
+export const getTotalBoardsByOrgId = async ({ orgId }: { orgId: string }) => {
+	try {
+		const res = await db
+			.select({ count: count() })
+			.from(board)
+			.where(eq(board.orgId, orgId));
+
+		return { success: "Retrieved Boards", data: { boardCount: res[0].count } };
 	} catch (error) {
 		return { error: "Error Retrieving Boards" };
 	}
