@@ -1,12 +1,6 @@
-import {
-	Dialog,
-	DialogContent,
-	DialogTitle,
-	DialogTrigger,
-} from "@/components/ui/dialog";
 import Navbar from "../_components/navbar";
 import List from "../_components/list";
-import CreateListButton from "@/components/create-list-button";
+import CreateListButton from "@/components/wrappers/create-list-button";
 
 const Page = () => {
 	const lists = [

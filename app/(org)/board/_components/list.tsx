@@ -23,7 +23,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { useState } from "react";
-import CreateCardButton from "@/components/create-card-button";
+import CreateCardButton from "@/components/wrappers/create-card-button";
 
 const List = ({ list }: any) => {
 	const [openAlertListDelete, setOpenAlertListDelete] = useState(false);
