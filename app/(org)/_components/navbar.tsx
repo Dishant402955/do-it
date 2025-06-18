@@ -3,28 +3,14 @@ import { Button } from "@/components/ui/button";
 import Logo from "@/components/logo";
 import User from "@/components/user";
 import OrgSwitch from "@/components/org-switch";
-import {
-	Dialog,
-	DialogContent,
-	DialogTitle,
-	DialogTrigger,
-} from "@/components/ui/dialog";
+import CreateBoardButton from "@/components/create-board-button";
 
 const Navbar = () => {
 	return (
 		<header className="fixed top-0 w-full flex justify-between items-center p-4 gap-4 h-16 shadow-accent-foreground/10 shadow dark:shadow-accent">
 			<div className="flex justify-center items-center h-full ml-2 gap-4">
 				<Logo />
-				<Dialog>
-					<DialogTrigger asChild>
-						<Button>Create +</Button>
-					</DialogTrigger>
-
-					<DialogContent className="flex flex-col justify-center items-center w-72 space-y-4">
-						<DialogTitle>Create new board</DialogTitle>
-						<p>TODO : Create form for new board</p>
-					</DialogContent>
-				</Dialog>
+				<CreateBoardButton />
 			</div>
 			<div className="flex justify-center items-center gap-x-4">
 				<ModeToggle />

@@ -90,7 +90,3 @@ export const getBoardsByOrgId = async ({ orgId }: { orgId: string }) => {
 		return { error: "Error Retrieving Boards" };
 	}
 };
-
-export const hello = () => {
-	console.log("hello");
-};
