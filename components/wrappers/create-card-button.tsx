@@ -5,7 +5,7 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from "@/components/ui/dialog";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 import React from "react";
 
 const CreateCardButton = ({ children }: { children?: React.ReactNode }) => {

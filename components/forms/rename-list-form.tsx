@@ -15,26 +15,28 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
-import { useTransition } from "react";
+import { useState, useTransition } from "react";
 
 const formSchema = z.object({
 	title: z.string().min(1, { message: "Title is required!" }).max(100),
 });
 
-export function CreateListForm() {
+export function RenameListForm() {
+	const [listTitle, setListTitle] = useState();
+
 	const [isLoading, startTransition] = useTransition();
 
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			title: "",
+			title: listTitle,
 		},
 	});
 
 	function onSubmit(values: z.infer<typeof formSchema>) {
 		startTransition(() => {
 			form.resetField("title");
-			toast.success(`List ${values.title} created.`);
+			toast.success(`List ${values.title} Renamed.`);
 		});
 	}
 
@@ -49,9 +51,10 @@ export function CreateListForm() {
 							<FormLabel className="ml-1">List Title</FormLabel>
 							<FormControl>
 								<Input
-									placeholder="Enter List Title"
 									{...field}
 									className="w-full my-1"
+									value={listTitle}
+									onChange={setListTitle as any}
 								/>
 							</FormControl>
 							<FormMessage />
@@ -60,7 +63,7 @@ export function CreateListForm() {
 					disabled={isLoading}
 				/>
 				<Button type="submit" size={"sm"}>
-					Submit
+					Rename
 				</Button>
 			</form>
 		</Form>

@@ -1,4 +1,4 @@
-import { CreateListForm } from "@/components/forms/create-list-form";
+import { RenameBoardForm } from "@/components/forms/rename-board-form";
 import {
 	Dialog,
 	DialogContent,
@@ -8,22 +8,22 @@ import {
 import { Button } from "../ui/button";
 import React from "react";
 
-const CreateListButton = ({ children }: { children?: React.ReactNode }) => {
+const CreateBoardButton = ({ children }: { children?: React.ReactNode }) => {
 	return (
 		<Dialog>
 			<DialogTrigger asChild>
 				<span>
 					{children}
-					{children ? null : <Button>Create +</Button>}
+					{children ? null : <Button>Rename</Button>}
 				</span>
 			</DialogTrigger>
 
 			<DialogContent className="flex flex-col justify-center items-center w-72 space-y-4">
-				<DialogTitle>Create New List</DialogTitle>
-				<CreateListForm />
+				<DialogTitle>Rename board</DialogTitle>
+				<RenameBoardForm />
 			</DialogContent>
 		</Dialog>
 	);
 };
 
-export default CreateListButton;
+export default CreateBoardButton;

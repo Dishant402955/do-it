@@ -15,26 +15,27 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
-import { useTransition } from "react";
+import { useState, useTransition } from "react";
 
 const formSchema = z.object({
 	title: z.string().min(1, { message: "Title is required!" }).max(100),
 });
 
-export function CreateBoardForm() {
+export function RenameBoardForm() {
+	const [boardTitle, setBoardTitle] = useState("");
 	const [isLoading, startTransition] = useTransition();
 
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			title: "",
+			title: boardTitle,
 		},
 	});
 
 	function onSubmit(values: z.infer<typeof formSchema>) {
 		startTransition(() => {
 			form.resetField("title");
-			toast.success(`Board ${values.title} created.`);
+			toast.success(`Board ${values.title} Renamed.`);
 		});
 	}
 
@@ -49,9 +50,10 @@ export function CreateBoardForm() {
 							<FormLabel className="ml-1">Board Title</FormLabel>
 							<FormControl>
 								<Input
-									placeholder="Enter Board Title"
 									{...field}
 									className="w-full my-1"
+									value={boardTitle}
+									onChange={setBoardTitle as any}
 								/>
 							</FormControl>
 							<FormMessage />
@@ -60,7 +62,7 @@ export function CreateBoardForm() {
 					disabled={isLoading}
 				/>
 				<Button type="submit" size={"sm"}>
-					Submit
+					Rename
 				</Button>
 			</form>
 		</Form>

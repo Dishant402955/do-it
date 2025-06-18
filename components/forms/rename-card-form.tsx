@@ -15,26 +15,28 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
-import { useTransition } from "react";
+import { useState, useTransition } from "react";
 
 const formSchema = z.object({
 	title: z.string().min(1, { message: "Title is required!" }).max(100),
 });
 
-export function CreateCardForm() {
+export function RenameCardForm() {
+	const [cardTitle, setCardTitle] = useState("");
+
 	const [isLoading, startTransition] = useTransition();
 
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			title: "",
+			title: cardTitle,
 		},
 	});
 
 	function onSubmit(values: z.infer<typeof formSchema>) {
 		startTransition(() => {
 			form.resetField("title");
-			toast.success(`Card ${values.title} created.`);
+			toast.success(`Card ${values.title} Renamed.`);
 		});
 	}
 
@@ -49,9 +51,10 @@ export function CreateCardForm() {
 							<FormLabel className="ml-1">Card Title</FormLabel>
 							<FormControl>
 								<Input
-									placeholder="Enter Card Title"
 									{...field}
 									className="w-full my-1"
+									value={cardTitle}
+									onChange={setCardTitle as any}
 								/>
 							</FormControl>
 							<FormMessage />
@@ -60,7 +63,7 @@ export function CreateCardForm() {
 					disabled={isLoading}
 				/>
 				<Button type="submit" size={"sm"}>
-					Submit
+					Rename
 				</Button>
 			</form>
 		</Form>
