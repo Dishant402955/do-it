@@ -6,7 +6,13 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Divide, MoreHorizontalIcon, Trash2Icon } from "lucide-react";
+import {
+	CopyIcon,
+	Divide,
+	FileTextIcon,
+	MoreHorizontalIcon,
+	Trash2Icon,
+} from "lucide-react";
 import {
 	AlertDialog,
 	AlertDialogAction,
@@ -17,7 +23,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { useState } from "react";
-import { Dialog } from "@/components/ui/dialog";
+import AddCard from "@/components/add-card";
 
 const List = ({ list }: any) => {
 	const [openAlertListDelete, setOpenAlertListDelete] = useState(false);
@@ -42,15 +48,27 @@ const List = ({ list }: any) => {
 	};
 
 	return (
-		<div className=" flex flex-col justify-start items-center bg-neutral-800">
-			<div className="w-full flex justify-between items-center">
-				<p>{list.title}</p>
-				<div className="flex justify-center items-center gap-x-4">
+		<div className="w-64 h-fit flex flex-col justify-center items-center bg-neutral-800 py-4 px-2 space-y-2">
+			<div className="w-full flex justify-between items-center px-2 mt-1 mb-4">
+				<p className="text-[1.2rem] font-bold">{list.title}</p>
+				<div className="flex justify-center items-center gap-x-4 font-semibold">
 					<DropdownMenu>
 						<DropdownMenuTrigger>
 							<MoreHorizontalIcon />
 						</DropdownMenuTrigger>
 						<DropdownMenuContent>
+							<DropdownMenuItem>
+								<div className="w-full  flex justify-start items-center space-x-3">
+									<FileTextIcon />
+									<p>Rename</p>
+								</div>
+							</DropdownMenuItem>
+							<DropdownMenuItem>
+								<div className="w-full  flex justify-start items-center space-x-3">
+									<CopyIcon />
+									<p>Copy</p>
+								</div>
+							</DropdownMenuItem>
 							<DropdownMenuItem
 								className="w-full"
 								onSelect={(e) => {
@@ -83,11 +101,11 @@ const List = ({ list }: any) => {
 					</AlertDialog>
 				</div>
 			</div>
-			<div className="w-full space-y-2 flex flex-col justify-start items-center">
+			<div className="w-full space-y-2 flex flex-col justify-start items-center py-2 px-4 bg-neutral-900 rounded-lg">
 				{list.cards.map((card: any, index: number) => {
 					return (
 						<div
-							className="w-full flex justify-between items-center"
+							className="w-full flex justify-between items-center my-1	"
 							key={index}
 						>
 							<p>{card.title}</p>
@@ -97,8 +115,18 @@ const List = ({ list }: any) => {
 										<MoreHorizontalIcon />
 									</DropdownMenuTrigger>
 									<DropdownMenuContent>
-										<DropdownMenuItem>Rename</DropdownMenuItem>
-										<DropdownMenuItem>Copy</DropdownMenuItem>
+										<DropdownMenuItem>
+											<div className="w-full  flex justify-start items-center space-x-3">
+												<FileTextIcon />
+												<p>Rename</p>
+											</div>
+										</DropdownMenuItem>
+										<DropdownMenuItem>
+											<div className="w-full  flex justify-start items-center space-x-3">
+												<CopyIcon />
+												<p>Copy</p>
+											</div>
+										</DropdownMenuItem>
 										<DropdownMenuItem
 											className="w-full"
 											onSelect={(e) => {
@@ -112,7 +140,6 @@ const List = ({ list }: any) => {
 												<p>Delete</p>
 											</div>
 										</DropdownMenuItem>
-										<DropdownMenuItem>+ Add Card</DropdownMenuItem>
 									</DropdownMenuContent>
 								</DropdownMenu>
 								<AlertDialog
@@ -141,7 +168,7 @@ const List = ({ list }: any) => {
 				})}
 			</div>
 			<div className="w-full flex">
-				<Button>+ Add Card</Button>
+				<AddCard />
 			</div>
 		</div>
 	);
