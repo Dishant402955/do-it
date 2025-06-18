@@ -2,12 +2,6 @@
 
 import CreateBoardButton from "@/components/wrappers/create-board-button";
 import Org from "@/components/org";
-import {
-	Dialog,
-	DialogContent,
-	DialogTitle,
-	DialogTrigger,
-} from "@/components/ui/dialog";
 
 import { Building2Icon } from "lucide-react";
 import Link from "next/link";
