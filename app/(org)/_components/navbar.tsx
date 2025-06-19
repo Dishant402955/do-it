@@ -2,7 +2,6 @@ import Logo from "@/components/logo";
 import User from "@/components/user";
 import OrgSwitch from "@/components/org-switch";
 import CreateBoardButton from "@/components/wrappers/create-board-button";
-import { Suspense } from "react";
 
 const Navbar = () => {
 	return (

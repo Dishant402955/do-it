@@ -1,4 +1,5 @@
 import Navbar from "./_components/navbar";
+import { unstable_ViewTransition as ViewTransition } from "react";
 
 export default function OrgLayout({
 	children,
@@ -8,7 +9,9 @@ export default function OrgLayout({
 	return (
 		<main className="h-full w-full">
 			<Navbar />
-			<div className="w-full h-full">{children}</div>
+			<ViewTransition>
+				<div className="w-full h-full">{children}</div>
+			</ViewTransition>
 		</main>
 	);
 }

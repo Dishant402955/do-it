@@ -3,6 +3,7 @@ import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
+import { unstable_ViewTransition as ViewTransition } from "react";
 
 export const metadata: Metadata = {
 	title: "Do it",
@@ -25,7 +26,7 @@ export default function RootLayout({
 						forcedTheme="dark"
 						disableTransitionOnChange
 					>
-						{children}
+						<ViewTransition>{children}</ViewTransition>
 					</ThemeProvider>
 				</body>
 			</html>

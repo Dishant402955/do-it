@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import Logo from "@/components/logo";
 import Link from "next/link";
 import User from "@/components/user";
+import { unstable_ViewTransition as ViewTransition } from "react";
 
 const Navbar = () => {
 	return (
@@ -10,21 +11,24 @@ const Navbar = () => {
 			<div className="flex justify-center items-center h-full ml-2">
 				<Logo />
 			</div>
-			<div className="flex justify-center items-center gap-x-4">
-				<SignedOut>
-					<div className="space-x-8">
-						<Link href={"sign-in"}>
-							<Button variant={"ghost"}>Login</Button>
-						</Link>
-						<Link href={"sign-up"}>
-							<Button>Do It for Free!</Button>
-						</Link>
-					</div>
-				</SignedOut>
-				<SignedIn>
-					<User />
-				</SignedIn>
-			</div>
+
+			<ViewTransition>
+				<div className="flex justify-center items-center gap-x-4">
+					<SignedOut>
+						<div className="space-x-8">
+							<Link href={"sign-in"}>
+								<Button variant={"ghost"}>Login</Button>
+							</Link>
+							<Link href={"sign-up"}>
+								<Button>Do It for Free!</Button>
+							</Link>
+						</div>
+					</SignedOut>
+					<SignedIn>
+						<User />
+					</SignedIn>
+				</div>
+			</ViewTransition>
 		</header>
 	);
 };

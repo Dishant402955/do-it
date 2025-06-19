@@ -5,6 +5,7 @@ import { auth } from "@clerk/nextjs/server";
 import Image from "next/image";
 import Link from "next/link";
 import React, { Suspense } from "react";
+import { unstable_ViewTransition as ViewTransition } from "react";
 
 const Home = async () => {
 	const { orgId } = await auth();
@@ -23,23 +24,25 @@ const Home = async () => {
 				<p className="text-2xl">Do it with Us Right Now!</p>
 			</div>
 
-			<SignedOut>
-				<Button asChild size={"lg"} className="p-0">
-					<Link href="/sign-up" className="px-8 py-4 text-xl">
-						Do it for Free!
-					</Link>
-				</Button>
-			</SignedOut>
-			<SignedIn>
-				<Button asChild size={"lg"} className="p-0">
-					<Link
-						href={orgId ? `org/${orgId}` : "/select-org"}
-						className="px-8 py-4 text-xl"
-					>
-						Go to Dashboard!
-					</Link>
-				</Button>
-			</SignedIn>
+			<ViewTransition>
+				<SignedOut>
+					<Button asChild size={"lg"} className="p-0">
+						<Link href="/sign-up" className="px-8 py-4 text-xl">
+							Do it for Free!
+						</Link>
+					</Button>
+				</SignedOut>
+				<SignedIn>
+					<Button asChild size={"lg"} className="p-0">
+						<Link
+							href={orgId ? `org/${orgId}` : "/select-org"}
+							className="px-8 py-4 text-xl"
+						>
+							Go to Dashboard!
+						</Link>
+					</Button>
+				</SignedIn>
+			</ViewTransition>
 		</div>
 	);
 };

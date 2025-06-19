@@ -17,6 +17,7 @@ import Image from "next/image";
 import { Suspense } from "react";
 import { Skeleton } from "./ui/skeleton";
 import OrgsSkeleton from "./orgs-skeleton";
+import { unstable_ViewTransition as ViewTransition } from "react";
 
 const Orgs = () => {
 	const { userMemberships, isLoaded, setActive } = useOrganizationList({
@@ -27,7 +28,7 @@ const Orgs = () => {
 	const { open } = useSidebar();
 
 	if (!isLoaded) {
-		return <p>Loading...</p>;
+		return <OrgsSkeleton />;
 	}
 
 	const items = [
@@ -59,68 +60,70 @@ const Orgs = () => {
 	}
 	return (
 		<Suspense fallback={<OrgsSkeleton />}>
-			<Accordion type="single" collapsible className="mt-4">
-				{data.map(
-					(
-						org: {
-							organization: { imageUrl: string; name: string; id: string };
-						},
-						index: number
-					) => (
-						<SidebarMenuItem key={index}>
-							<AccordionItem value={`${index}`}>
-								<AccordionTrigger className="flex w-full items-center">
-									<Suspense
-										fallback={
-											<Skeleton>
-												<div className="flex w-full items-center">
-													<div className="size-[34px]" />
-													<Title title={""} />
-												</div>
-											</Skeleton>
-										}
-									>
-										<Image
-											src={org.organization.imageUrl}
-											alt="org"
-											height={34}
-											width={34}
-										/>
-										<Title title={org.organization.name} />
-									</Suspense>
-								</AccordionTrigger>
-								<AccordionContent>
-									<ol>
-										{items.map((item, index) => (
-											<li
-												key={index}
-												className={`w-full flex justify-start items-center gap-4 hover:bg-accent`}
-											>
-												<Link
-													href={`/org/${org.organization.id}/${item.url}`}
-													onClick={() => {
-														setActive({ organization: org.organization.id });
-													}}
-													className={`flex gap-4 size-full  ${
-														open
-															? "p-2 pl-3"
-															: "p-1 py-2 justify-center items-center"
-													}`}
+			<ViewTransition>
+				<Accordion type="single" collapsible className="mt-4">
+					{data.map(
+						(
+							org: {
+								organization: { imageUrl: string; name: string; id: string };
+							},
+							index: number
+						) => (
+							<SidebarMenuItem key={index}>
+								<AccordionItem value={`${index}`}>
+									<AccordionTrigger className="flex w-full items-center">
+										<Suspense
+											fallback={
+												<Skeleton>
+													<div className="flex w-full items-center">
+														<div className="size-[34px]" />
+														<Title title={""} />
+													</div>
+												</Skeleton>
+											}
+										>
+											<Image
+												src={org.organization.imageUrl}
+												alt="org"
+												height={34}
+												width={34}
+											/>
+											<Title title={org.organization.name} />
+										</Suspense>
+									</AccordionTrigger>
+									<AccordionContent>
+										<ol>
+											{items.map((item, index) => (
+												<li
+													key={index}
+													className={`w-full flex justify-start items-center gap-4 hover:bg-accent`}
 												>
-													<item.icon
-														className={`flex justify-center items-center h-5 w-5`}
-													/>
-													<p className={open ? "" : "hidden"}>{item.title}</p>
-												</Link>
-											</li>
-										))}
-									</ol>
-								</AccordionContent>
-							</AccordionItem>
-						</SidebarMenuItem>
-					)
-				)}
-			</Accordion>
+													<Link
+														href={`/org/${org.organization.id}/${item.url}`}
+														onClick={() => {
+															setActive({ organization: org.organization.id });
+														}}
+														className={`flex gap-4 size-full  ${
+															open
+																? "p-2 pl-3"
+																: "p-1 py-2 justify-center items-center"
+														}`}
+													>
+														<item.icon
+															className={`flex justify-center items-center h-5 w-5`}
+														/>
+														<p className={open ? "" : "hidden"}>{item.title}</p>
+													</Link>
+												</li>
+											))}
+										</ol>
+									</AccordionContent>
+								</AccordionItem>
+							</SidebarMenuItem>
+						)
+					)}
+				</Accordion>
+			</ViewTransition>
 		</Suspense>
 	);
 };
