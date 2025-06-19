@@ -1,12 +1,10 @@
 "use client";
 
 import { OrganizationSwitcher, useOrganization } from "@clerk/nextjs";
-import { dark, experimental__simple } from "@clerk/themes";
-import { useTheme } from "next-themes";
+import { dark } from "@clerk/themes";
 import { redirect } from "next/navigation";
 
 const OrgSwitch = () => {
-	const { theme } = useTheme();
 	const { isLoaded, organization } = useOrganization();
 
 	if (!isLoaded) {
@@ -21,11 +19,11 @@ const OrgSwitch = () => {
 		<>
 			<OrganizationSwitcher
 				appearance={{
-					baseTheme: theme === "light" ? experimental__simple : dark,
+					baseTheme: dark,
 				}}
 				organizationProfileProps={{
 					appearance: {
-						baseTheme: theme === "light" ? experimental__simple : dark,
+						baseTheme: dark,
 					},
 				}}
 				hidePersonal

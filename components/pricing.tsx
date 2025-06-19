@@ -2,11 +2,10 @@
 
 import { useOrganization, PricingTable } from "@clerk/nextjs";
 import { dark, experimental__simple } from "@clerk/themes";
-import { useTheme } from "next-themes";
+
 import { redirect } from "next/navigation";
 
 const Pricing = () => {
-	const { theme } = useTheme();
 	const { isLoaded, organization } = useOrganization();
 
 	if (!isLoaded) {
@@ -21,7 +20,7 @@ const Pricing = () => {
 		<div className="w-full px-4 flex justify-center items-center">
 			<PricingTable
 				appearance={{
-					baseTheme: theme === "light" ? experimental__simple : dark,
+						baseTheme: dark,
 					elements: {
 						pricingTableCard: {
 							maxWidth: "400px",
@@ -30,7 +29,7 @@ const Pricing = () => {
 				}}
 				checkoutProps={{
 					appearance: {
-						baseTheme: theme === "light" ? experimental__simple : dark,
+							baseTheme: dark,
 					},
 				}}
 				forOrganizations

@@ -1,5 +1,4 @@
 import { SignedIn, SignedOut } from "@clerk/nextjs";
-import { ModeToggle } from "@/components/mode-toggle";
 import { Button } from "@/components/ui/button";
 import Logo from "@/components/logo";
 import Link from "next/link";
@@ -12,7 +11,6 @@ const Navbar = () => {
 				<Logo />
 			</div>
 			<div className="flex justify-center items-center gap-x-4">
-				<ModeToggle />
 				<SignedOut>
 					<div className="space-x-8">
 						<Link href={"sign-in"}>

@@ -1,8 +1,8 @@
-import { ModeToggle } from "@/components/mode-toggle";
 import Logo from "@/components/logo";
 import User from "@/components/user";
 import OrgSwitch from "@/components/org-switch";
 import CreateBoardButton from "@/components/wrappers/create-board-button";
+import { Suspense } from "react";
 
 const Navbar = () => {
 	return (
@@ -12,9 +12,12 @@ const Navbar = () => {
 				<CreateBoardButton />
 			</div>
 			<div className="flex justify-center items-center gap-x-4">
-				<ModeToggle />
+				<Suspense fallback={<div className="h-10 w-40" />}>
 				<OrgSwitch />
+				</Suspense>
+				<Suspense fallback={<div className="size-10 rounded-full" />}>
 				<User />
+				</Suspense>
 			</div>
 		</header>
 	);

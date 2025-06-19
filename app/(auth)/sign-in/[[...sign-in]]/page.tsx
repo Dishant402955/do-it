@@ -1,16 +1,12 @@
-"use client";
-
 import { SignIn } from "@clerk/nextjs";
-import { dark, experimental__simple } from "@clerk/themes";
-import { useTheme } from "next-themes";
+import { dark } from "@clerk/themes";
+import { Loader } from "lucide-react";
 
 const SignInPage = () => {
-	const { theme } = useTheme();
-
 	return (
 		<SignIn
 			appearance={{
-				baseTheme: theme === "light" ? experimental__simple : dark,
+				baseTheme: dark,
 			}}
 		/>
 	);

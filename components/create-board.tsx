@@ -3,7 +3,6 @@
 import CreateBoardButton from "./wrappers/create-board-button";
 
 const CreateBoard = () => {
-	// const remaining = getTotalBoardsByOrgId(orgId);
 	return (
 		<CreateBoardButton>
 			<div className="h-36 w-44 rounded-lg bg-accent/50 flex flex-col justify-center items-center">

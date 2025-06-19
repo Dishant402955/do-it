@@ -1,15 +1,13 @@
-"use client";
 import { SignUp } from "@clerk/nextjs";
 import { dark, experimental__simple } from "@clerk/themes";
-import { useTheme } from "next-themes";
-const SignUpPage = () => {
-	const { theme } = useTheme();
+import { Loader } from "lucide-react";
 
+const SignUpPage = () => {
 	return (
 		<>
 			<SignUp
 				appearance={{
-					baseTheme: theme === "light" ? experimental__simple : dark,
+					baseTheme: dark,
 				}}
 			/>
 		</>

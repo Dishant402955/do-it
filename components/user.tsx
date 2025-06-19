@@ -2,24 +2,21 @@
 
 import { UserButton } from "@clerk/nextjs";
 import { dark, experimental__simple } from "@clerk/themes";
-import { useTheme } from "next-themes";
+
+import { Skeleton } from "./ui/skeleton";
 
 const User = () => {
-	const { theme } = useTheme();
-
 	return (
-		<>
 			<UserButton
 				appearance={{
-					baseTheme: theme === "light" ? experimental__simple : dark,
+				baseTheme: dark,
 				}}
 				userProfileProps={{
 					appearance: {
-						baseTheme: theme === "light" ? experimental__simple : dark,
+					baseTheme: dark,
 					},
 				}}
 			/>
-		</>
 	);
 };
 
