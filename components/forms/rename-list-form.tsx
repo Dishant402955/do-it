@@ -36,7 +36,6 @@ export function RenameListForm() {
 
 	function onSubmit(values: z.infer<typeof formSchema>) {
 		startTransition(() => {
-			form.resetField("title");
 			toast.success(`List ${values.title} Renamed.`);
 		});
 	}

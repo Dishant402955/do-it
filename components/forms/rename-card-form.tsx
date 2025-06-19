@@ -36,7 +36,6 @@ export function RenameCardForm() {
 
 	function onSubmit(values: z.infer<typeof formSchema>) {
 		startTransition(() => {
-			form.resetField("title");
 			toast.success(`Card ${values.title} Renamed.`);
 		});
 	}

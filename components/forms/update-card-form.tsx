@@ -16,25 +16,30 @@ import {
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { useTransition } from "react";
+import { Textarea } from "../ui/textarea";
 
 const formSchema = z.object({
 	title: z.string().min(1, { message: "Title is required!" }).max(100),
+	description: z.optional(z.string()),
 });
 
-export function RenameBoardForm() {
-	// const [boardTitle, setBoardTitle] = useState("");
+export function RenameCardForm() {
+	// const [cardTitle, setCardTitle] = useState("");
+
 	const [isLoading, startTransition] = useTransition();
 
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
+			// title: cardTitle,
 			title: "",
+			description: "",
 		},
 	});
 
 	function onSubmit(values: z.infer<typeof formSchema>) {
 		startTransition(() => {
-			toast.success(`Board ${values.title} Renamed.`);
+			toast.success(`Card ${values.title} Renamed.`);
 		});
 	}
 
@@ -46,14 +51,28 @@ export function RenameBoardForm() {
 					name="title"
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel className="ml-1">Board Title</FormLabel>
+							<FormLabel className="ml-1">Card Title</FormLabel>
 							<FormControl>
 								<Input
 									{...field}
 									className="w-full my-1"
-									// value={boardTitle}
-									// onChange={setBoardTitle}
+									// value={cardTitle}
+									// onChange={setCardTitle}
 								/>
+							</FormControl>
+							<FormMessage />
+						</FormItem>
+					)}
+					disabled={isLoading}
+				/>
+				<FormField
+					control={form.control}
+					name="description"
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel className="ml-1">Card Title</FormLabel>
+							<FormControl>
+								<Textarea {...field} />
 							</FormControl>
 							<FormMessage />
 						</FormItem>
