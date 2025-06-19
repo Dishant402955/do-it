@@ -23,7 +23,7 @@ const formSchema = z.object({
 	description: z.optional(z.string()),
 });
 
-export function RenameCardForm() {
+export function UpdateCardForm() {
 	// const [cardTitle, setCardTitle] = useState("");
 
 	const [isLoading, startTransition] = useTransition();
