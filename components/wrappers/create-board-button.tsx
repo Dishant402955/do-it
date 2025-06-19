@@ -7,8 +7,15 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "../ui/button";
 import React from "react";
+import { createBoard } from "@/db/crud/board.crud";
+import { auth } from "@clerk/nextjs/server";
 
-const CreateBoardButton = ({ children }: { children?: React.ReactNode }) => {
+const CreateBoardButton = async ({
+	children,
+}: {
+	children?: React.ReactNode;
+}) => {
+	const { orgId } = await auth();
 	return (
 		<Dialog>
 			<DialogTrigger asChild>
@@ -20,7 +27,7 @@ const CreateBoardButton = ({ children }: { children?: React.ReactNode }) => {
 
 			<DialogContent className="flex flex-col justify-center items-center w-72 space-y-4">
 				<DialogTitle>Create new board</DialogTitle>
-				<CreateBoardForm />
+				<CreateBoardForm createBoard={createBoard} orgId={orgId} />
 			</DialogContent>
 		</Dialog>
 	);

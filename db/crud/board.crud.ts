@@ -3,6 +3,7 @@
 import { db } from "@/db/index";
 import { board } from "@/db/schema";
 import { count, eq } from "drizzle-orm";
+import { revalidatePath } from "next/cache";
 
 export const createBoard = async ({
 	orgId,
@@ -24,9 +25,8 @@ export const createBoard = async ({
 	try {
 		const res = await db.insert(board).values(item);
 
-		if (res.rowCount > 0) {
-			return { success: "Board Created" };
-		}
+		revalidatePath(`/org/${orgId}`);
+		return { success: "Board Created" };
 	} catch (error) {
 		return { error: "Error Creating Board" };
 	}

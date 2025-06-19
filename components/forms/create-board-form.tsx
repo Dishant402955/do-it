@@ -21,7 +21,7 @@ const formSchema = z.object({
 	title: z.string().min(1, { message: "Title is required!" }).max(100),
 });
 
-export function CreateBoardForm() {
+export function CreateBoardForm({ createBoard, orgId }: any) {
 	const [isLoading, startTransition] = useTransition();
 
 	const form = useForm<z.infer<typeof formSchema>>({
@@ -32,9 +32,17 @@ export function CreateBoardForm() {
 	});
 
 	function onSubmit(values: z.infer<typeof formSchema>) {
-		startTransition(() => {
-			form.resetField("title");
-			toast.success(`Board ${values.title} created.`);
+		startTransition(async () => {
+			const res = await createBoard({ orgId, title: values.title });
+
+			if (res.success) {
+				form.resetField("title");
+				toast.success(`Board ${values.title} created.`);
+			}
+
+			if (res.error) {
+				toast.error(`Error Creating Board`);
+			}
 		});
 	}
 
@@ -59,7 +67,7 @@ export function CreateBoardForm() {
 					)}
 					disabled={isLoading}
 				/>
-				<Button type="submit" size={"sm"}>
+				<Button type="submit" size={"sm"} disabled={isLoading}>
 					Submit
 				</Button>
 			</form>

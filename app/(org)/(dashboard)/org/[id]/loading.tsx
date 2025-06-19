@@ -14,25 +14,25 @@ const Loading = () => {
 
 			<div className="grid grid-cols-5 space-y-4 my-8 w-[80%] ml-20">
 				<div className="h-36 w-44 rounded-lg bg-accent/50 p-0">
-					<p className="size-full p-2 flex justify-center items-center">
+					<div className="size-full p-2 flex justify-center items-center">
 						<p className="font-bold text-2xl bg-accent-foreground dark:bg-accent h-16 w-36 rounded-lg flex justify-center items-center">
 							{}
 						</p>
-					</p>
+					</div>
 				</div>
 				<div className="h-36 w-44 rounded-lg bg-accent/50 p-0">
-					<p className="size-full p-2 flex justify-center items-center">
+					<div className="size-full p-2 flex justify-center items-center">
 						<p className="font-bold text-2xl bg-accent-foreground dark:bg-accent h-16 w-36 rounded-lg flex justify-center items-center">
 							{}
 						</p>
-					</p>
+					</div>
 				</div>
 				<div className="h-36 w-44 rounded-lg bg-accent/50 p-0">
-					<p className="size-full p-2 flex justify-center items-center">
+					<div className="size-full p-2 flex justify-center items-center">
 						<p className="font-bold text-2xl bg-accent-foreground dark:bg-accent h-16 w-36 rounded-lg flex justify-center items-center">
 							{}
 						</p>
-					</p>
+					</div>
 				</div>
 			</div>
 		</Skeleton>
