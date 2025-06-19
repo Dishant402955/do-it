@@ -7,16 +7,17 @@ import { Skeleton } from "./ui/skeleton";
 
 const User = () => {
 	return (
-			<UserButton
-				appearance={{
+		<UserButton
+			appearance={{
 				baseTheme: dark,
-				}}
-				userProfileProps={{
-					appearance: {
+			}}
+			userProfileProps={{
+				appearance: {
 					baseTheme: dark,
-					},
-				}}
-			/>
+				},
+			}}
+			fallback={<Skeleton className="size-8 rounded-full" />}
+		/>
 	);
 };
 

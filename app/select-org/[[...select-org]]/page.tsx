@@ -7,7 +7,7 @@ import { Loader } from "lucide-react";
 import { useTheme } from "next-themes";
 
 const SelectOrg = () => {
-	const { theme } = useTheme();
+	const { orgId } = useAuth();
 	return (
 		<div className="h-full w-full flex justify-center items-center">
 			<div className="absolute top-8 left-8">
@@ -21,6 +21,7 @@ const SelectOrg = () => {
 				appearance={{
 					baseTheme: dark,
 				}}
+				fallback={<Loader className="animate-spin" />}
 			/>
 		</div>
 	);

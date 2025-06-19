@@ -1,9 +1,10 @@
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 import { SignedIn, SignedOut } from "@clerk/nextjs";
 import { auth } from "@clerk/nextjs/server";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { Suspense } from "react";
 
 const Home = async () => {
 	const { orgId } = await auth();
@@ -11,12 +12,14 @@ const Home = async () => {
 	return (
 		<div className="pt-24 pb-16 h-full w-full flex flex-col justify-start items-center gap-y-4">
 			<div className="flex flex-col justify-center items-center">
-				<Image
-					src="/images/image-DT4sJJnTChL2MZOpzyhzOr5UOm00Qh.png"
-					height={300}
-					width={300}
-					alt="Welcome"
-				/>
+				<Suspense fallback={<Skeleton className="size-[300px]" />}>
+					<Image
+						src="/images/image-DT4sJJnTChL2MZOpzyhzOr5UOm00Qh.png"
+						height={300}
+						width={300}
+						alt="Welcome"
+					/>
+				</Suspense>
 				<p className="text-2xl">Do it with Us Right Now!</p>
 			</div>
 

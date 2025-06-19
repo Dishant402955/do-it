@@ -1,5 +1,7 @@
 import Org from "@/components/org";
 import Pricing from "@/components/pricing";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Suspense } from "react";
 
 const BillingsPage = () => {
 	return (

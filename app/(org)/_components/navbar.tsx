@@ -12,12 +12,8 @@ const Navbar = () => {
 				<CreateBoardButton />
 			</div>
 			<div className="flex justify-center items-center gap-x-4">
-				<Suspense fallback={<div className="h-10 w-40" />}>
 				<OrgSwitch />
-				</Suspense>
-				<Suspense fallback={<div className="size-10 rounded-full" />}>
 				<User />
-				</Suspense>
 			</div>
 		</header>
 	);

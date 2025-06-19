@@ -17,6 +17,7 @@ const SelectOrg = () => {
 				appearance={{
 					baseTheme: dark,
 				}}
+				fallback={<Loader className="animate-spin" />}
 			/>
 		</div>
 	);

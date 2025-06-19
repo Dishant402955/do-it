@@ -14,6 +14,8 @@ import { SidebarMenuItem, useSidebar } from "./ui/sidebar";
 import Link from "next/link";
 import { useOrganizationList } from "@clerk/nextjs";
 import Image from "next/image";
+import { Suspense } from "react";
+import { Skeleton } from "./ui/skeleton";
 
 const Orgs = () => {
 	const { userMemberships, isLoaded, setActive } = useOrganizationList({
@@ -64,13 +66,24 @@ const Orgs = () => {
 					<SidebarMenuItem key={index}>
 						<AccordionItem value={`${index}`}>
 							<AccordionTrigger className="flex w-full items-center">
-								<Image
-									src={org.organization.imageUrl}
-									alt="org"
-									height={34}
-									width={34}
-								/>
-								<Title title={org.organization.name} />
+								<Suspense
+									fallback={
+										<Skeleton>
+											<div className="flex w-full items-center">
+												<div className="size-[34px]" />
+												<Title title={""} />
+											</div>
+										</Skeleton>
+									}
+								>
+									<Image
+										src={org.organization.imageUrl}
+										alt="org"
+										height={34}
+										width={34}
+									/>
+									<Title title={org.organization.name} />
+								</Suspense>
 							</AccordionTrigger>
 							<AccordionContent>
 								<ol>

@@ -3,6 +3,8 @@
 import { OrganizationSwitcher, useOrganization } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
 import { redirect } from "next/navigation";
+import { Suspense } from "react";
+import { Skeleton } from "./ui/skeleton";
 
 const OrgSwitch = () => {
 	const { isLoaded, organization } = useOrganization();
@@ -16,7 +18,13 @@ const OrgSwitch = () => {
 	}
 
 	return (
-		<>
+		<Suspense
+			fallback={
+				<Skeleton>
+					<div className="h-10 w-40" />
+				</Skeleton>
+			}
+		>
 			<OrganizationSwitcher
 				appearance={{
 					baseTheme: dark,
@@ -33,7 +41,7 @@ const OrgSwitch = () => {
 				createOrganizationMode="navigation"
 				createOrganizationUrl="/create-org"
 			/>
-		</>
+		</Suspense>
 	);
 };
 

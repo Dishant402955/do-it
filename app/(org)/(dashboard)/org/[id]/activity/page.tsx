@@ -1,4 +1,6 @@
 import Org from "@/components/org";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Suspense } from "react";
 
 const ActivityPage = () => {
 	const Logs = [
@@ -49,6 +51,7 @@ const ActivityPage = () => {
 	return (
 		<div className="w-full h-full flex flex-col justify-center items-center space-y-2 py-10 px-5">
 			<Org />
+
 			{Logs.map((log, index) => {
 				return (
 					<div

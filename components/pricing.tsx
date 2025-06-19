@@ -4,6 +4,8 @@ import { useOrganization, PricingTable } from "@clerk/nextjs";
 import { dark, experimental__simple } from "@clerk/themes";
 
 import { redirect } from "next/navigation";
+import { Suspense } from "react";
+import { Skeleton } from "./ui/skeleton";
 
 const Pricing = () => {
 	const { isLoaded, organization } = useOrganization();
@@ -17,25 +19,35 @@ const Pricing = () => {
 	}
 
 	return (
-		<div className="w-full px-4 flex justify-center items-center">
-			<PricingTable
-				appearance={{
+		<Suspense
+			fallback={
+				<Skeleton>
+					<div className="w-full px-4 flex justify-center items-center">
+						<div className="w-full max-w-[400px]" />
+					</div>
+				</Skeleton>
+			}
+		>
+			<div className="w-full px-4 flex justify-center items-center">
+				<PricingTable
+					appearance={{
 						baseTheme: dark,
-					elements: {
-						pricingTableCard: {
-							maxWidth: "400px",
+						elements: {
+							pricingTableCard: {
+								maxWidth: "400px",
+							},
 						},
-					},
-				}}
-				checkoutProps={{
-					appearance: {
+					}}
+					checkoutProps={{
+						appearance: {
 							baseTheme: dark,
-					},
-				}}
-				forOrganizations
-				newSubscriptionRedirectUrl={`/org/${organization.id}`}
-			/>
-		</div>
+						},
+					}}
+					forOrganizations
+					newSubscriptionRedirectUrl={`/org/${organization.id}`}
+				/>
+			</div>
+		</Suspense>
 	);
 };
 

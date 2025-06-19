@@ -8,6 +8,8 @@ const SignInPage = () => {
 			appearance={{
 				baseTheme: dark,
 			}}
+			fallback={<Loader className="animate-spin" />}
+			forceRedirectUrl={"/"}
 		/>
 	);
 };
