@@ -1,5 +1,3 @@
-"use client";
-
 import CreateBoardButton from "./wrappers/create-board-button";
 
 const CreateBoard = () => {

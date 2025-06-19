@@ -5,43 +5,34 @@ import { dark } from "@clerk/themes";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import { Skeleton } from "./ui/skeleton";
+import { auth } from "@clerk/nextjs/server";
+import { Loader } from "lucide-react";
 
-const OrgSwitch = () => {
-	const { isLoaded, organization } = useOrganization();
+const OrgSwitch = async () => {
+	const { orgId } = await auth();
 
-	if (!isLoaded) {
-		return <p>Loading...</p>;
-	}
-
-	if (!organization) {
+	if (!orgId) {
 		redirect(`/select-org`);
 	}
 
 	return (
-		<Suspense
-			fallback={
-				<Skeleton>
-					<div className="h-10 w-40" />
-				</Skeleton>
-			}
-		>
-			<OrganizationSwitcher
-				appearance={{
+		<OrganizationSwitcher
+			appearance={{
+				baseTheme: dark,
+			}}
+			organizationProfileProps={{
+				appearance: {
 					baseTheme: dark,
-				}}
-				organizationProfileProps={{
-					appearance: {
-						baseTheme: dark,
-					},
-				}}
-				hidePersonal
-				afterSelectOrganizationUrl={`/org/${organization?.id}`}
-				afterCreateOrganizationUrl={`/org/${organization?.id}`}
-				afterLeaveOrganizationUrl="/select-org"
-				createOrganizationMode="navigation"
-				createOrganizationUrl="/create-org"
-			/>
-		</Suspense>
+				},
+			}}
+			hidePersonal
+			afterSelectOrganizationUrl={`/org/${orgId}`}
+			afterCreateOrganizationUrl={`/org/${orgId}`}
+			afterLeaveOrganizationUrl="/select-org"
+			createOrganizationMode="navigation"
+			createOrganizationUrl="/create-org"
+			fallback={<Loader className="animate-spin" />}
+		/>
 	);
 };
 

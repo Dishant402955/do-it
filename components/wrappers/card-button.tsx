@@ -1,5 +1,3 @@
-"use client";
-
 import { UpdateCardForm } from "@/components/forms/update-card-form";
 import {
 	Dialog,
@@ -8,7 +6,6 @@ import {
 	DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "../ui/button";
-import { Trash2Icon } from "lucide-react";
 
 const RenameCardButton = ({ children }: { children?: React.ReactNode }) => {
 	return (
