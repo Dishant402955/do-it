@@ -1,6 +1,4 @@
 import Org from "@/components/org";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Suspense } from "react";
 
 const ActivityPage = () => {
 	const Logs = [

@@ -1,12 +1,8 @@
-"use client";
-
 import { OrganizationSwitcher, useOrganization } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
 import { redirect } from "next/navigation";
-import { Suspense } from "react";
-import { Skeleton } from "./ui/skeleton";
 import { auth } from "@clerk/nextjs/server";
-import { Loader } from "lucide-react";
+import Loader from "./loader";
 
 const OrgSwitch = async () => {
 	const { orgId } = await auth();
@@ -31,7 +27,7 @@ const OrgSwitch = async () => {
 			afterLeaveOrganizationUrl="/select-org"
 			createOrganizationMode="navigation"
 			createOrganizationUrl="/create-org"
-			fallback={<Loader className="animate-spin" />}
+			fallback={<Loader />}
 		/>
 	);
 };

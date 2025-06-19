@@ -1,3 +1,4 @@
+import Loader from "@/components/loader";
 import { OrganizationProfile } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
 
@@ -8,6 +9,7 @@ const SettingsPage = () => {
 				appearance={{
 					baseTheme: dark,
 				}}
+				fallback={<Loader />}
 			/>
 		</div>
 	);

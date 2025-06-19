@@ -1,6 +1,6 @@
+import Loader from "@/components/loader";
 import { SignUp } from "@clerk/nextjs";
-import { dark, experimental__simple } from "@clerk/themes";
-import { Loader } from "lucide-react";
+import { dark } from "@clerk/themes";
 
 const SignUpPage = () => {
 	return (
@@ -9,7 +9,7 @@ const SignUpPage = () => {
 				appearance={{
 					baseTheme: dark,
 				}}
-				fallback={<Loader className="animate-spin" />}
+				fallback={<Loader />}
 				forceRedirectUrl={"/"}
 			/>
 		</>
