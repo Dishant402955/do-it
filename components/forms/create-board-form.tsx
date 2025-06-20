@@ -17,6 +17,7 @@ import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { useState, useTransition } from "react";
 import { boardAlreadyExists, createBoard } from "@/db/crud/board.crud";
+import { redirect } from "next/navigation";
 
 const formSchema = z.object({
 	title: z.string().min(1, { message: "Title is required!" }).max(100),
@@ -50,16 +51,14 @@ export function CreateBoardForm({ orgId, onSuccess }: any) {
 
 			const res = await createBoard({ orgId, title: values.title });
 
-			if (res.success) {
-				onSuccess();
-				form.resetField("title");
-				toast.success(`Board ${values.title} created.`);
-				return;
-			}
-
 			if (res.error) {
 				toast.error(`Error Creating Board`);
 				return;
+			} else {
+				onSuccess();
+				form.resetField("title");
+				toast.success(`Board ${values.title} created.`);
+				return redirect(`/board/${res.data?.board?.id}`);
 			}
 		});
 	}

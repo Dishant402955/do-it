@@ -26,7 +26,10 @@ export const createBoard = async ({
 		const res = await db.insert(board).values(item);
 
 		revalidatePath(`/org/${orgId}`);
-		return { success: "Board Created" };
+
+		const newBoard = await getBoardByTitleAndOrgId({ title, orgId });
+
+		return { success: "Board Created", data: { board: newBoard?.data?.board } };
 	} catch (error) {
 		return { error: "Error Creating Board" };
 	}
@@ -70,6 +73,27 @@ export const updateBoardTitle = async ({
 export const getBoardById = async ({ id }: { id: string }) => {
 	try {
 		const res = await db.select().from(board).where(eq(board.id, id));
+
+		if (res.length >= 0) {
+			return { success: "Retrieved Board", data: { board: res[0] } };
+		}
+	} catch (error) {
+		return { error: "Error Retrieving Board" };
+	}
+};
+
+export const getBoardByTitleAndOrgId = async ({
+	title,
+	orgId,
+}: {
+	title: string;
+	orgId: string;
+}) => {
+	try {
+		const res = await db
+			.select()
+			.from(board)
+			.where(and(eq(board.orgId, orgId), eq(board.title, title)));
 
 		if (res.length >= 0) {
 			return { success: "Retrieved Board", data: { board: res[0] } };
