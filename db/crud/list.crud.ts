@@ -30,9 +30,8 @@ export const createList = async ({
 	try {
 		const res = await db.insert(list).values(item);
 
-		if (res.rowCount > 0) {
-			return { success: "List Created" };
-		}
+		revalidatePath(`/board/${boardId}`);
+		return { success: "List Created" };
 	} catch (error) {
 		return { error: "Error Creating List" };
 	}
@@ -120,5 +119,31 @@ export const getListsByBoardId = async ({
 		}
 	} catch (error) {
 		return { error: "Error Retrieving Lists" };
+	}
+};
+
+export const listAlreadyExists = async ({
+	title,
+	boardId,
+}: {
+	title: string;
+	boardId: string;
+}) => {
+	try {
+		const res = await db
+			.select()
+			.from(list)
+			.where(and(eq(list.title, title), eq(list.boardId, boardId)));
+
+		if (res.length > 0) {
+			return { success: "Done", data: { exists: true } };
+		}
+		if (res.length === 0) {
+			return { success: "Done", data: { exists: false } };
+		}
+
+		return { error: "Something went Wrong!" };
+	} catch (error) {
+		return { error: "Something went wrong!" };
 	}
 };

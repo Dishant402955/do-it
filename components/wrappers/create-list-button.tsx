@@ -1,3 +1,5 @@
+"use client";
+
 import { CreateListForm } from "@/components/forms/create-list-form";
 import {
 	Dialog,
@@ -6,13 +8,20 @@ import {
 	DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "../ui/button";
-import React from "react";
+import React, { useState } from "react";
 
-const CreateListButton = ({ children }: { children?: React.ReactNode }) => {
+const CreateListButton = ({
+	children,
+	boardId,
+}: {
+	children?: React.ReactNode;
+	boardId: string;
+}) => {
+	const [open, setOpen] = useState(false);
 	return (
-		<Dialog>
+		<Dialog open={open} onOpenChange={setOpen}>
 			<DialogTrigger asChild>
-				<span>
+				<span className="h-fit">
 					{children}
 					{children ? null : <Button>Create +</Button>}
 				</span>
@@ -20,7 +29,7 @@ const CreateListButton = ({ children }: { children?: React.ReactNode }) => {
 
 			<DialogContent className="flex flex-col justify-center items-center w-72 space-y-4">
 				<DialogTitle>Create New List</DialogTitle>
-				<CreateListForm />
+				<CreateListForm boardId={boardId} onSuccess={() => setOpen(false)} />
 			</DialogContent>
 		</Dialog>
 	);

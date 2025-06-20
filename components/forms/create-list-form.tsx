@@ -15,14 +15,25 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
-import { useTransition } from "react";
+import { useState, useTransition } from "react";
+import { createList } from "@/db/crud/list.crud";
+import { useRouter } from "next/navigation";
+import { listAlreadyExists } from "@/db/crud/list.crud";
 
 const formSchema = z.object({
 	title: z.string().min(1, { message: "Title is required!" }).max(100),
 });
 
-export function CreateListForm() {
+export function CreateListForm({
+	boardId,
+	onSuccess,
+}: {
+	boardId: string;
+	onSuccess: () => void;
+}) {
 	const [isLoading, startTransition] = useTransition();
+	const [error, setError] = useState<string | undefined>();
+	const router = useRouter();
 
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
@@ -32,9 +43,31 @@ export function CreateListForm() {
 	});
 
 	function onSubmit(values: z.infer<typeof formSchema>) {
-		startTransition(() => {
-			form.resetField("title");
-			toast.success(`List ${values.title} created.`);
+		startTransition(async () => {
+			const exists = await listAlreadyExists({ title: values.title, boardId });
+
+			if (exists.error) {
+				toast.error(exists.error);
+				return;
+			}
+			if (exists.success && exists.data.exists) {
+				setError("List title is already taken!");
+				toast.error("List title is already taken");
+				return;
+			}
+
+			const res = await createList({ boardId, title: values.title });
+
+			if (res.error) {
+				toast.error(`Error Creating List`);
+				return;
+			} else {
+				onSuccess();
+				form.resetField("title");
+				toast.success(`List ${values.title} created.`);
+				router.refresh();
+				return;
+			}
 		});
 	}
 
@@ -55,11 +88,12 @@ export function CreateListForm() {
 								/>
 							</FormControl>
 							<FormMessage />
+							{error ? <p className="text-rose-400">{error}</p> : null}
 						</FormItem>
 					)}
 					disabled={isLoading}
 				/>
-				<Button type="submit" size={"sm"}>
+				<Button type="submit" size={"sm"} disabled={isLoading}>
 					Submit
 				</Button>
 			</form>
