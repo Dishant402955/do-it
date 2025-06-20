@@ -1,8 +1,9 @@
 "use server";
 
 import { db } from "@/db/index";
-import { desc, eq } from "drizzle-orm";
-import { list } from "../schema";
+import { and, desc, eq, or } from "drizzle-orm";
+import { card, list } from "../schema";
+import { revalidatePath } from "next/cache";
 
 export const createList = async ({
 	title,
@@ -103,17 +104,18 @@ export const getListById = async ({ id }: { id: string }) => {
 	}
 };
 
-export const getListsByBoardId = async ({
-	boardId,
-	id,
-}: {
-	boardId: string;
-	id: string;
-}) => {
+export const getListsByBoardId = async ({ boardId }: { boardId: string }) => {
 	try {
-		console.log(id);
-		const res = await db.select().from(list).where(eq(list.boardId, boardId));
+		// const res = await db
+		// 	.select()
+		// 	.from(list)
+		// 	.where(eq(list.boardId, boardId))
+		// 	.leftJoin(card, eq(list.id, card.listId));
 
+		const res = await db.query.list.findMany({
+			where: (list, { eq }) => eq(list.boardId, boardId),
+			with: { cards: true },
+		});
 		if (res.length >= 0) {
 			return { success: "Lists Retrieved", data: { lists: res } };
 		}

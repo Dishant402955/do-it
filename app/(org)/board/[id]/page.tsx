@@ -7,6 +7,7 @@ import Navbar from "../_components/navbar";
 import List from "../_components/list";
 import CreateListButton from "@/components/wrappers/create-list-button";
 import Squares from "@/components/boxes/squares";
+import { getListsByBoardId } from "@/db/crud/list.crud";
 
 type PageProps = {
 	params: { id: string };
@@ -24,6 +25,8 @@ const Page = async ({ params }: PageProps) => {
 		return redirect(`/org/${orgId}`);
 
 	const board = boardResponse.data.board;
+	const listResponse = await getListsByBoardId({ boardId: board.id });
+	const data = listResponse?.data?.lists ?? [];
 
 	const memberships = await (
 		await clerkClient()
@@ -50,13 +53,13 @@ const Page = async ({ params }: PageProps) => {
 						boardTitle={board.title}
 						orgId={board.orgId}
 					/>
-					<div className="h-full w-full bg-transparent px-10 grid grid-flow-col-dense space-x-2 pt-5">
-						<CreateListButton>
+					<div className="h-full w-full bg-transparent px-10 grid grid-rows-2 grid-flow-col pt-5">
+						<CreateListButton boardId={board.id}>
 							<div className="h-24 w-64 rounded-lg bg-accent/50 flex justify-center items-center cursor-pointer">
 								<p>+ Add List</p>
 							</div>
 						</CreateListButton>
-						<List />
+						<List data={data} />
 					</div>
 				</div>
 			</div>
