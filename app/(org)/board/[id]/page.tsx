@@ -1,37 +1,65 @@
+// app/(board)/[id]/page.tsx
+import { getBoardById } from "@/db/crud/board.crud";
+import { clerkClient, auth } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
+
 import Navbar from "../_components/navbar";
 import List from "../_components/list";
 import CreateListButton from "@/components/wrappers/create-list-button";
 import Squares from "@/components/boxes/squares";
 
-const Page = () => {
-	return (
-		<>
-			<Squares
-				speed={0.5}
-				squareSize={40}
-				direction="diagonal"
-				borderColor="#fff"
-				hoverFillColor="#fff"
-			>
-				<div className="w-full h-full">
-					<div className="h-full w-full pt-32 flex justify-start items-center">
-						<Navbar />
-						<div className="h-full w-full bg-transparent px-10 grid grid-flow-col-dense space-x-2 pt-5">
-							<CreateListButton>
-								<div className="h-24 w-64 rounded-lg bg-accent/50 flex justify-center items-center cursor-pointer">
-									<p>+ Add List</p>
-								</div>
-							</CreateListButton>
+type PageProps = {
+	params: { id: string };
+};
 
-							<List />
-						</div>
+const Page = async ({ params }: PageProps) => {
+	const { userId } = await auth();
+
+	if (!userId) return redirect("/sign-in");
+	const { id } = await params;
+
+	const boardResponse = await getBoardById({ id });
+	if (!boardResponse.success || !boardResponse.data.board) return redirect("/");
+
+	const board = boardResponse.data.board;
+
+	const memberships = await (
+		await clerkClient()
+	).users.getOrganizationMembershipList({
+		userId,
+	});
+	const isAuthorized = memberships.data.some(
+		(m) => m.organization.id === board.orgId
+	);
+	if (!isAuthorized) return redirect("/");
+
+	return (
+		<Squares
+			speed={0.5}
+			squareSize={40}
+			direction="diagonal"
+			borderColor="#fff"
+			hoverFillColor="#fff"
+		>
+			<div className="w-full h-full">
+				<div className="h-full w-full pt-32 flex justify-start items-center">
+					<Navbar
+						boardId={board.id}
+						boardTitle={board.title}
+						orgId={board.orgId}
+					/>
+					<div className="h-full w-full bg-transparent px-10 grid grid-flow-col-dense space-x-2 pt-5">
+						<CreateListButton>
+							<div className="h-24 w-64 rounded-lg bg-accent/50 flex justify-center items-center cursor-pointer">
+								<p>+ Add List</p>
+							</div>
+						</CreateListButton>
+						<List />
 					</div>
 				</div>
-			</Squares>
-		</>
+			</div>
+		</Squares>
 	);
 };
 
 export default Page;
-
-//

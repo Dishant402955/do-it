@@ -1,3 +1,6 @@
+// components/wrappers/rename-board-button.tsx
+"use client";
+
 import { RenameBoardForm } from "@/components/forms/rename-board-form";
 import {
 	Dialog,
@@ -6,22 +9,33 @@ import {
 	DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "../ui/button";
-import React from "react";
-import { getBoardById } from "@/db/crud/board.crud";
+import React, { useState } from "react";
 
-const RenameBoardButton = ({ children }: { children?: React.ReactNode }) => {
+type Props = {
+	id: string;
+	initialTitle: string;
+	children?: React.ReactNode;
+	orgId: string;
+};
+
+const RenameBoardButton = ({ id, initialTitle, children, orgId }: Props) => {
+	const [open, setOpen] = useState(false);
 	return (
-		<Dialog>
+		<Dialog open={open} onOpenChange={setOpen}>
 			<DialogTrigger asChild>
 				<span>
-					{children}
-					{children ? null : <Button>title</Button>}
+					{children ?? <Button variant="ghost">{initialTitle}</Button>}
 				</span>
 			</DialogTrigger>
 
 			<DialogContent className="flex flex-col justify-center items-center w-72 space-y-4">
 				<DialogTitle>Rename board</DialogTitle>
-				<RenameBoardForm />
+				<RenameBoardForm
+					boardId={id}
+					initialTitle={initialTitle}
+					orgId={orgId}
+					onSuccess={() => setOpen(false)}
+				/>
 			</DialogContent>
 		</Dialog>
 	);
