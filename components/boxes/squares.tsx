@@ -168,9 +168,11 @@ const Squares: React.FC<SquaresProps> = ({
 		<>
 			<canvas
 				ref={canvasRef}
-				className="w-full h-full border-none absolute top-0 left-0 opacity-30 -z-20"
+				className="w-full h-full border-none absolute self-center opacity-30 -z-20"
 			></canvas>
-			<div className="h-full w-full">{children}</div>
+			<div className="h-full w-full flex justify-center items-center">
+				{children}
+			</div>
 		</>
 	);
 };

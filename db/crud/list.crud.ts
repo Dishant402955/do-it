@@ -38,13 +38,18 @@ export const createList = async ({
 	}
 };
 
-export const DeleteList = async ({ id }: { id: string }) => {
+export const DeleteList = async ({
+	id,
+	boardId,
+}: {
+	id: string;
+	boardId: string;
+}) => {
 	try {
 		const res = await db.delete(list).where(eq(list.id, id));
 
-		if (res.rowCount >= 0) {
-			return { success: "List Created" };
-		}
+		revalidatePath(`/board/${boardId}`);
+		return { success: "List Created" };
 	} catch (error) {
 		return { error: "Error Deleting Document" };
 	}

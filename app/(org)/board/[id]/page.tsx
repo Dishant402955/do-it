@@ -8,6 +8,8 @@ import List from "../_components/list";
 import CreateListButton from "@/components/wrappers/create-list-button";
 import Squares from "@/components/boxes/squares";
 import { getListsByBoardId } from "@/db/crud/list.crud";
+import { Suspense } from "react";
+import Loader from "@/components/loader";
 
 type PageProps = {
 	params: { id: string };
@@ -46,22 +48,24 @@ const Page = async ({ params }: PageProps) => {
 			borderColor="#fff"
 			hoverFillColor="#fff"
 		>
-			<div className="w-full h-full">
-				<div className="h-full w-full pt-32 flex justify-start items-center">
-					<Navbar
-						boardId={board.id}
-						boardTitle={board.title}
-						orgId={board.orgId}
-					/>
-					<div className="h-full w-full bg-transparent px-10 grid grid-rows-2 grid-flow-col pt-5">
-						<CreateListButton boardId={board.id}>
-							<div className="h-24 w-64 rounded-lg bg-accent/50 flex justify-center items-center cursor-pointer">
-								<p>+ Add List</p>
-							</div>
-						</CreateListButton>
-						<List data={data} />
+			<div className="w-full h-full flex justify-center items-center">
+				<Suspense fallback={<Loader />}>
+					<div className="h-full w-full pt-32 flex justify-start items-start">
+						<Navbar
+							boardId={board.id}
+							boardTitle={board.title}
+							orgId={board.orgId}
+						/>
+						<div className="h-full w-full bg-transparent px-10 flex gap-4 pt-5 flex-wrap justify-start items-start">
+							<CreateListButton boardId={board.id}>
+								<div className="h-24 w-64 rounded-lg bg-accent/50 flex justify-center items-center cursor-pointer">
+									<p>+ Add List</p>
+								</div>
+							</CreateListButton>
+							<List data={data} boardId={board.id} />
+						</div>
 					</div>
-				</div>
+				</Suspense>
 			</div>
 		</Squares>
 	);

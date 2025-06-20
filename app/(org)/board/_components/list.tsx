@@ -21,13 +21,16 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import CreateCardButton from "@/components/wrappers/create-card-button";
 import RenameListButton from "@/components/wrappers/rename-list-button";
 import RenameCardButton from "@/components/wrappers/rename-card-button";
+import { DeleteList } from "@/db/crud/list.crud";
+import { redirect, useRouter } from "next/navigation";
 
 const List = ({
 	data,
+	boardId,
 }: {
 	data: {
 		id: string;
@@ -47,13 +50,25 @@ const List = ({
 			listId: string;
 		}[];
 	}[];
+	boardId: string;
 }) => {
 	const [openAlertListDelete, setOpenAlertListDelete] = useState(false);
 	const [openAlertCardDelete, setOpenAlertCardDelete] = useState(false);
+	const [isLoadingList, startTransitionList] = useTransition();
+	const router = useRouter();
 
-	const handleDeleteList = () => {
-		toast.success("List Delete called");
-		setOpenAlertListDelete(false);
+	const handleDeleteList = (id: string) => {
+		startTransitionList(async () => {
+			const res = await DeleteList({ boardId, id });
+
+			if (res.error) {
+				toast.error("Error Deleting List");
+				return;
+			}
+			toast.success(`List Deleted`);
+			setOpenAlertListDelete(false);
+			router.refresh();
+		});
 	};
 	const handleCancleDeleteList = () => {
 		toast.info("List Deletion Cancelled");
@@ -61,7 +76,7 @@ const List = ({
 	};
 
 	const handleDeleteCard = () => {
-		toast.success("Card Delete called");
+		toast.success("Card Deleted");
 		setOpenAlertCardDelete(false);
 	};
 	const handleCancleDeleteCard = () => {
@@ -72,7 +87,7 @@ const List = ({
 	return (
 		<>
 			{data.length > 0
-				? data.map(({ title, cards }, index) => {
+				? data.map(({ title, id, cards }, index) => {
 						return (
 							<div
 								className="w-64 h-fit max-h-[40%] flex flex-col justify-center items-center bg-neutral-800 py-4 px-2 space-y-2"
@@ -127,7 +142,9 @@ const List = ({
 												<AlertDialogTitle></AlertDialogTitle>
 												Do you Really Want to delete this?
 												<AlertDialogAction asChild>
-													<Button onClick={handleDeleteList}>Delete</Button>
+													<Button onClick={() => handleDeleteList(id)}>
+														Delete
+													</Button>
 												</AlertDialogAction>
 												<AlertDialogCancel asChild>
 													<Button
