@@ -7,6 +7,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "../ui/button";
 import React from "react";
+import { getBoardById } from "@/db/crud/board.crud";
 
 const RenameBoardButton = ({ children }: { children?: React.ReactNode }) => {
 	return (
@@ -14,7 +15,7 @@ const RenameBoardButton = ({ children }: { children?: React.ReactNode }) => {
 			<DialogTrigger asChild>
 				<span>
 					{children}
-					{children ? null : <Button>Rename</Button>}
+					{children ? null : <Button>title</Button>}
 				</span>
 			</DialogTrigger>
 

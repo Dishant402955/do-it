@@ -62,9 +62,7 @@ export const updateBoardTitle = async ({
 			.set({ title, updatedAt: new Date(Date.now()).toDateString() })
 			.where(eq(board.id, id));
 
-		if (res.rowCount) {
-			return { success: "Updated Board Title" };
-		}
+		return { success: "Updated Board Title" };
 	} catch (error) {
 		return { error: "Error Updating Board Title" };
 	}
@@ -74,9 +72,7 @@ export const getBoardById = async ({ id }: { id: string }) => {
 	try {
 		const res = await db.select().from(board).where(eq(board.id, id));
 
-		if (res.length >= 0) {
-			return { success: "Retrieved Board", data: { board: res[0] } };
-		}
+		return { success: "Retrieved Board", data: { board: res[0] } };
 	} catch (error) {
 		return { error: "Error Retrieving Board" };
 	}

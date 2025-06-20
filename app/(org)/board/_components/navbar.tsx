@@ -14,7 +14,9 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import RenameBoardButton from "@/components/wrappers/rename-board-button";
-import { useOrganization } from "@clerk/nextjs";
+import { getBoardById } from "@/db/crud/board.crud";
+
+import { useOrganization, useOrganizationList } from "@clerk/nextjs";
 import {
 	CopyIcon,
 	FileTextIcon,
@@ -22,41 +24,82 @@ import {
 	Trash2Icon,
 } from "lucide-react";
 import { redirect, useParams } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { toast } from "sonner";
 
 const Navbar = () => {
+	const [isLoading, startTransition] = useTransition();
 	const params = useParams();
-	const { organization, isLoaded } = useOrganization();
-
+	const { isLoaded } = useOrganization();
+	const { userMemberships, setActive } = useOrganizationList({
+		userMemberships: { infinite: true },
+	});
 	const [openAlert, setOpenAlert] = useState(false);
-	if (!isLoaded) {
-		return <p>Loading ...</p>;
-	}
+	// const [currentBoard, setCurrentBoard] = useState<
+	// 	| undefined
+	// 	| {
+	// 			id: string;
+	// 			title: string;
+	// 			createdAt: string;
+	// 			updatedAt: string | null;
+	// 			orgId: string;
+	// 	  }
+	// >();
 
-	if (!organization) {
-		return redirect("/select-org");
-	}
+	useEffect(() => {
+		async function fetch() {
+			if (!isLoaded || !setActive) {
+				return <p>Loading ...</p>;
+			}
+
+			const board = await getBoardById({ id: `${params.id}` });
+			const { data } = userMemberships;
+
+			if (data?.length === 0) {
+				return redirect("/create-org");
+			}
+
+			if (board?.success && board.data.board) {
+				console.log(board.data.board);
+				console.log(data);
+				const match =
+					data?.filter(
+						(org) => org.organization.id === board.data.board.orgId
+					) ?? [];
+
+				if (!match || match?.length === 0) {
+					return redirect("/");
+				}
+
+				if (!setActive) {
+					return <p>loading...</p>;
+				}
+				setActive({ organization: match[0].organization });
+			}
+		}
+
+		fetch();
+	}, [params.id]);
 
 	const handleDelete = () => {
-		toast.success("delete called");
-		setOpenAlert(false);
+		startTransition(async () => {
+			toast.success("delete called");
+			setOpenAlert(false);
+		});
 	};
 
 	const handleCancle = () => {
-		toast.info("Deletion Cancelled");
+		startTransition(() => {
+			toast.info("Deletion Cancelled");
 
-		setOpenAlert(false);
+			setOpenAlert(false);
+		});
 	};
 
 	return (
 		<header className="fixed top-16 w-full flex justify-between items-center p-4 gap-4 h-16 border-b-[2px] bg-neutral-950">
 			<div className="flex justify-center items-center h-full ml-2 gap-4">
-				<RenameBoardButton>
-					<Button variant={"outline"} size={"lg"}>
-						{params.id}
-					</Button>
-				</RenameBoardButton>
+				<RenameBoardButton />
 			</div>
 			<div className="flex justify-center items-center gap-x-4">
 				<DropdownMenu>
@@ -100,10 +143,16 @@ const Navbar = () => {
 						<AlertDialogTitle></AlertDialogTitle>
 						Do you Really Want to delete this?
 						<AlertDialogAction asChild>
-							<Button onClick={handleDelete}>Delete</Button>
+							<Button onClick={handleDelete} disabled={isLoading}>
+								Delete
+							</Button>
 						</AlertDialogAction>
 						<AlertDialogCancel asChild>
-							<Button onClick={handleCancle} variant={"secondary"}>
+							<Button
+								onClick={handleCancle}
+								variant={"secondary"}
+								disabled={isLoading}
+							>
 								Cancel
 							</Button>
 						</AlertDialogCancel>

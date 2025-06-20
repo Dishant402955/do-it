@@ -15,7 +15,9 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
-import { useTransition } from "react";
+import { useEffect, useTransition } from "react";
+import { getBoardById } from "@/db/crud/board.crud";
+import { useParams } from "next/navigation";
 
 const formSchema = z.object({
 	title: z.string().min(1, { message: "Title is required!" }).max(100),
@@ -23,6 +25,7 @@ const formSchema = z.object({
 
 export function RenameBoardForm() {
 	// const [boardTitle, setBoardTitle] = useState("");
+	const params = useParams();
 	const [isLoading, startTransition] = useTransition();
 
 	const form = useForm<z.infer<typeof formSchema>>({
@@ -31,6 +34,17 @@ export function RenameBoardForm() {
 			title: "",
 		},
 	});
+
+	useEffect(() => {
+		const fetchBoard = async () => {
+			const res = await getBoardById({ id: `${params.id}` });
+			if (res.success && res.data?.board?.title) {
+				form.setValue("title", res.data.board.title);
+			}
+		};
+
+		fetchBoard();
+	}, [params.id, form]);
 
 	function onSubmit(values: z.infer<typeof formSchema>) {
 		startTransition(() => {
