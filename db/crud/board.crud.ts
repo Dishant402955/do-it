@@ -35,15 +35,19 @@ export const createBoard = async ({
 	}
 };
 
-export const deleteBoard = async ({ id }: { id: string }) => {
+export const deleteBoard = async ({
+	id,
+	orgId,
+}: {
+	id: string;
+	orgId: string;
+}) => {
 	try {
 		const res = await db.delete(board).where(eq(board.id, id));
 
-		if (res.rowCount > 0) {
-			return { success: "Board Deleted" };
-		} else {
-			return { success: "No Board Exists to Delete it" };
-		}
+		revalidatePath(`/org/${orgId}`);
+
+		return { success: "Board Deleted" };
 	} catch (error) {
 		return { error: "Error Deleting Board" };
 	}
@@ -62,6 +66,7 @@ export const updateBoardTitle = async ({
 			.set({ title, updatedAt: new Date(Date.now()).toDateString() })
 			.where(eq(board.id, id));
 
+		revalidatePath(`/board/${id}`);
 		return { success: "Updated Board Title" };
 	} catch (error) {
 		return { error: "Error Updating Board Title" };

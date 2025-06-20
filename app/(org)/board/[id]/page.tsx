@@ -13,13 +13,15 @@ type PageProps = {
 };
 
 const Page = async ({ params }: PageProps) => {
-	const { userId } = await auth();
+	const { userId, orgId } = await auth();
 
 	if (!userId) return redirect("/sign-in");
+	if (!orgId) return redirect("/select-org");
 	const { id } = await params;
 
 	const boardResponse = await getBoardById({ id });
-	if (!boardResponse.success || !boardResponse.data.board) return redirect("/");
+	if (!boardResponse.success || !boardResponse.data.board)
+		return redirect(`/org/${orgId}`);
 
 	const board = boardResponse.data.board;
 
@@ -31,7 +33,7 @@ const Page = async ({ params }: PageProps) => {
 	const isAuthorized = memberships.data.some(
 		(m) => m.organization.id === board.orgId
 	);
-	if (!isAuthorized) return redirect("/");
+	if (!isAuthorized) return redirect(`/org/${orgId}`);
 
 	return (
 		<Squares

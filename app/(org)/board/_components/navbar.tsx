@@ -16,12 +16,14 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import RenameBoardButton from "@/components/wrappers/rename-board-button";
+import { deleteBoard } from "@/db/crud/board.crud";
 import {
 	CopyIcon,
 	FileTextIcon,
 	MoreHorizontalIcon,
 	Trash2Icon,
 } from "lucide-react";
+import { redirect } from "next/navigation";
 import { useState, useTransition } from "react";
 import { toast } from "sonner";
 
@@ -37,9 +39,15 @@ const Navbar = ({ boardId, boardTitle, orgId }: NavbarProps) => {
 
 	const handleDelete = () => {
 		startTransition(async () => {
-			// TODO: Replace this with actual delete logic
-			toast.success("Board deleted.");
-			setOpenAlert(false);
+			const res = await deleteBoard({ orgId, id: boardId });
+
+			if (res.error) {
+				toast.error(res.error);
+			} else {
+				toast.success(`Board ${boardTitle} Deleted`);
+				setOpenAlert(false);
+				redirect(`/org/${orgId}`);
+			}
 		});
 	};
 
