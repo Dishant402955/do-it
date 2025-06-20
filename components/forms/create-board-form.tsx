@@ -15,14 +15,16 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
-import { useTransition } from "react";
+import { useState, useTransition } from "react";
+import { boardAlreadyExists, createBoard } from "@/db/crud/board.crud";
 
 const formSchema = z.object({
 	title: z.string().min(1, { message: "Title is required!" }).max(100),
 });
 
-export function CreateBoardForm({ createBoard, orgId }: any) {
+export function CreateBoardForm({ orgId, onSuccess }: any) {
 	const [isLoading, startTransition] = useTransition();
+	const [error, setError] = useState<string | undefined>();
 
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
@@ -33,15 +35,31 @@ export function CreateBoardForm({ createBoard, orgId }: any) {
 
 	function onSubmit(values: z.infer<typeof formSchema>) {
 		startTransition(async () => {
+			setError(undefined);
+			const exists = await boardAlreadyExists({ title: values.title, orgId });
+
+			if (exists.error) {
+				toast.error(exists.error);
+				return;
+			}
+			if (exists.success && exists.data.exists) {
+				setError("Board title is already taken!");
+				toast.error("Board title is already taken");
+				return;
+			}
+
 			const res = await createBoard({ orgId, title: values.title });
 
 			if (res.success) {
+				onSuccess();
 				form.resetField("title");
 				toast.success(`Board ${values.title} created.`);
+				return;
 			}
 
 			if (res.error) {
 				toast.error(`Error Creating Board`);
+				return;
 			}
 		});
 	}
@@ -63,6 +81,7 @@ export function CreateBoardForm({ createBoard, orgId }: any) {
 								/>
 							</FormControl>
 							<FormMessage />
+							{error ? <p className="text-rose-400">{error}</p> : null}
 						</FormItem>
 					)}
 					disabled={isLoading}

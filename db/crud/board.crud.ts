@@ -2,7 +2,7 @@
 
 import { db } from "@/db/index";
 import { board } from "@/db/schema";
-import { count, eq } from "drizzle-orm";
+import { and, count, eq, exists } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
 export const createBoard = async ({
@@ -101,5 +101,31 @@ export const getTotalBoardsByOrgId = async ({ orgId }: { orgId: string }) => {
 		return { success: "Retrieved Boards", data: { boardCount: res[0].count } };
 	} catch (error) {
 		return { error: "Error Retrieving Boards" };
+	}
+};
+
+export const boardAlreadyExists = async ({
+	title,
+	orgId,
+}: {
+	title: string;
+	orgId: string;
+}) => {
+	try {
+		const res = await db
+			.select()
+			.from(board)
+			.where(and(eq(board.title, title), eq(board.orgId, orgId)));
+
+		if (res.length > 0) {
+			return { success: "Done", data: { exists: true } };
+		}
+		if (res.length === 0) {
+			return { success: "Done", data: { exists: false } };
+		}
+
+		return { error: "Something went Wrong!" };
+	} catch (error) {
+		return { error: "Something went wrong!" };
 	}
 };

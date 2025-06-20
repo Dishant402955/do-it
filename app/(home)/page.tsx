@@ -1,3 +1,4 @@
+import PearlButton from "@/components/pearl-button";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { SignedIn, SignedOut } from "@clerk/nextjs";
@@ -26,21 +27,18 @@ const Home = async () => {
 
 			<ViewTransition>
 				<SignedOut>
-					<Button asChild size={"lg"} className="p-0">
-						<Link href="/sign-up" className="px-8 py-4 text-xl">
-							Do it for Free!
-						</Link>
-					</Button>
+					{/* <Button asChild size={"lg"} className="p-0"> */}
+					<Link href="/sign-up" className="">
+						<PearlButton label="Do it for Free" />
+					</Link>
+					{/* </Button> */}
 				</SignedOut>
 				<SignedIn>
-					<Button asChild size={"lg"} className="p-0">
-						<Link
-							href={orgId ? `org/${orgId}` : "/select-org"}
-							className="px-8 py-4 text-xl"
-						>
-							Go to Dashboard!
-						</Link>
-					</Button>
+					{/* <Button asChild size={"lg"} className="p-0"> */}
+					<Link href={orgId ? `org/${orgId}` : "/select-org"} className="">
+						<PearlButton label="Go to Dashboard" />
+					</Link>
+					{/* </Button> */}
 				</SignedIn>
 			</ViewTransition>
 		</div>
