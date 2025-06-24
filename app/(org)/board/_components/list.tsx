@@ -34,7 +34,7 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from "@/components/ui/dialog";
-import { updateCardListId } from "@/db/crud/card.crud";
+import { deleteCard, updateCardListId } from "@/db/crud/card.crud";
 import { cn } from "@/lib/utils";
 
 const List = ({
@@ -94,7 +94,7 @@ const List = ({
 
 	const handleDeleteCard = (id: string) => {
 		startTransitionList(async () => {
-			const res = await DeleteList({ boardId, id });
+			const res = await deleteCard({ boardId, id });
 
 			if (res.error) {
 				toast.error("Error Deleting Card");
@@ -302,7 +302,7 @@ const List = ({
 																	Do you Really Want to delete this?
 																	<AlertDialogAction asChild>
 																		<Button
-																			onClick={() => handleDeleteCard(id)}
+																			onClick={() => handleDeleteCard(card.id)}
 																		>
 																			Delete
 																		</Button>

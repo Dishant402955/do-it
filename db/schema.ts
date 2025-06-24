@@ -79,7 +79,7 @@ export const card = pgTable(
 			columns: [table.listId],
 			foreignColumns: [list.id],
 			name: "fkey",
-		}),
+		}).onDelete("cascade"),
 	]
 );
 
