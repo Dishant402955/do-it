@@ -15,6 +15,13 @@
       "when": 1750747435380,
       "tag": "0001_pink_spacker_dave",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1750757137536,
+      "tag": "0002_wealthy_hammerhead",
+      "breakpoints": true
     }
   ]
 }

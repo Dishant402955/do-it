@@ -27,19 +27,6 @@ export const board = pgTable(
 	(table) => [unique("constraint_1").on(table.title, table.orgId)]
 );
 
-export const auditLog = pgTable("auditLog", {
-	id: uuid().defaultRandom().primaryKey().notNull(),
-	createdAt: timestamp("created_at", { mode: "string" }).defaultNow().notNull(),
-	updatedAt: timestamp("updated_at", { mode: "string" }).defaultNow(),
-	orgId: uuid("org_id").notNull(),
-	actionType: action("action_type").default("CREATE").notNull(),
-	entityId: uuid("entity_id").notNull(),
-	userId: uuid("user_id").notNull(),
-	username: text().default("unknown"),
-	entityTitle: text("entity_title").default("unknown").notNull(),
-	entityType: entity("entity_type").default("BOARD").notNull(),
-});
-
 export const list = pgTable(
 	"list",
 	{

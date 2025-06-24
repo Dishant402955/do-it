@@ -47,12 +47,6 @@ const Orgs = () => {
 			slug: "boards",
 		},
 		{
-			title: "Activity",
-			url: `activity`,
-			icon: ActivityIcon,
-			slug: "activity",
-		},
-		{
 			title: "Settings",
 			url: `settings`,
 			icon: Settings,
