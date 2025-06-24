@@ -50,7 +50,7 @@ const Page = async ({ params }: PageProps) => {
 		>
 			<div className="w-full h-full flex justify-center items-center">
 				<Suspense fallback={<Loader />}>
-					<div className="h-full w-full pt-32 flex justify-start items-start">
+					<div className="h-full w-full pt-16 flex flex-col justify-start items-start">
 						<Navbar
 							boardId={board.id}
 							boardTitle={board.title}

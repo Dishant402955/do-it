@@ -57,7 +57,7 @@ const Navbar = ({ boardId, boardTitle, orgId }: NavbarProps) => {
 	};
 
 	return (
-		<header className="fixed top-16 w-full flex justify-between items-center p-4 gap-4 h-16 border-b-[2px] bg-neutral-950">
+		<header className="w-full flex justify-between items-center p-4 gap-4 border-b-[2px] bg-neutral-950">
 			<div className="flex items-center gap-4 ml-2">
 				<RenameBoardButton
 					id={boardId}

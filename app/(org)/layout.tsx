@@ -8,15 +8,16 @@ export default function OrgLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<SidebarProvider>
-			<AppSidebar />
+		<>
+			<SidebarProvider>
+				<AppSidebar />
 
-			<SidebarTrigger className="mt-16" />
-			<main className="h-full w-full">
+				<SidebarTrigger className="mt-16" />
+
 				<Navbar />
 
-				<div className="w-full h-full">{children}</div>
-			</main>
-		</SidebarProvider>
+				{children}
+			</SidebarProvider>
+		</>
 	);
 }
