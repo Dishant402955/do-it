@@ -1,6 +1,5 @@
 import Footer from "./_components/footer";
 import Navbar from "./_components/navbar";
-import { unstable_ViewTransition as ViewTransition } from "react";
 
 export default function HomeLayout({
 	children,
@@ -10,9 +9,7 @@ export default function HomeLayout({
 	return (
 		<main className="h-full w-full">
 			<Navbar />
-			<div className="w-full h-full">
-				<ViewTransition>{children}</ViewTransition>
-			</div>
+			<div className="w-full h-full">{children}</div>
 			<Footer />
 		</main>
 	);

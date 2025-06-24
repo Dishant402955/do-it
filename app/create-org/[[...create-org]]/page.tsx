@@ -3,7 +3,6 @@ import Logo from "@/components/logo";
 import { CreateOrganization } from "@clerk/nextjs";
 import { auth } from "@clerk/nextjs/server";
 import { dark } from "@clerk/themes";
-import { unstable_ViewTransition as ViewTransition } from "react";
 
 const SelectOrg = async () => {
 	const { orgId } = await auth();
@@ -12,15 +11,13 @@ const SelectOrg = async () => {
 			<div className="absolute top-8 left-8">
 				<Logo />
 			</div>
-			<ViewTransition>
-				<CreateOrganization
-					afterCreateOrganizationUrl={`/org/${orgId}`}
-					appearance={{
-						baseTheme: dark,
-					}}
-					fallback={<Loader />}
-				/>
-			</ViewTransition>
+			<CreateOrganization
+				afterCreateOrganizationUrl={`/org/${orgId}`}
+				appearance={{
+					baseTheme: dark,
+				}}
+				fallback={<Loader />}
+			/>
 		</div>
 	);
 };
