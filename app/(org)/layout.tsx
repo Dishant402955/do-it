@@ -1,7 +1,6 @@
 import Navbar from "./_components/navbar";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
-import { unstable_ViewTransition as ViewTransition } from "react";
 
 export default function OrgLayout({
 	children,
@@ -16,9 +15,7 @@ export default function OrgLayout({
 			<main className="h-full w-full">
 				<Navbar />
 
-				<div className="w-full h-full">
-					<ViewTransition>{children}</ViewTransition>
-				</div>
+				<div className="w-full h-full">{children}</div>
 			</main>
 		</SidebarProvider>
 	);
