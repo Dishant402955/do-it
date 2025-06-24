@@ -12,20 +12,27 @@ import React, { useState } from "react";
 // import { createBoard } from "@/db/crud/board.crud";
 import { useAuth } from "@clerk/nextjs";
 import Loader from "../loader";
+import { Skeleton } from "../ui/skeleton";
 
-const CreateBoardButton = ({ children }: { children?: React.ReactNode }) => {
+const CreateBoardButton = ({
+	children,
+	fallback,
+}: {
+	children?: React.ReactNode;
+	fallback?: string;
+}) => {
 	const { orgId, isLoaded } = useAuth();
 	const [open, setOpen] = useState(false);
 
 	if (!isLoaded) {
-		return <Loader />;
+		return <Skeleton className={fallback} />;
 	}
 	return (
 		<Dialog open={open} onOpenChange={setOpen}>
 			<DialogTrigger asChild>
 				<span>
 					{children}
-					{children ? null : <Button>Create +</Button>}
+					{children ? null : <Button>Board +</Button>}
 				</span>
 			</DialogTrigger>
 

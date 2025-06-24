@@ -3,6 +3,7 @@ import { dark } from "@clerk/themes";
 import { redirect } from "next/navigation";
 import { auth } from "@clerk/nextjs/server";
 import Loader from "./loader";
+import { Skeleton } from "./ui/skeleton";
 
 const OrgSwitch = async () => {
 	const { orgId } = await auth();
@@ -27,7 +28,7 @@ const OrgSwitch = async () => {
 			afterLeaveOrganizationUrl="/select-org"
 			createOrganizationMode="navigation"
 			createOrganizationUrl="/create-org"
-			fallback={<Loader />}
+			fallback={<Skeleton className="w-25 h-6 rounded-lg" />}
 		/>
 	);
 };
