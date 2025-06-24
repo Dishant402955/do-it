@@ -17,7 +17,6 @@ import Image from "next/image";
 import { Suspense } from "react";
 import { Skeleton } from "./ui/skeleton";
 import OrgsSkeleton from "./orgs-skeleton";
-import { unstable_ViewTransition as ViewTransition } from "react";
 import { cn } from "@/lib/utils";
 import { redirect, usePathname } from "next/navigation";
 
@@ -73,92 +72,90 @@ const Orgs = () => {
 	}
 	return (
 		<Suspense fallback={<OrgsSkeleton />}>
-			<ViewTransition>
-				<Accordion type="single" collapsible className="mt-4">
-					{data.map(
-						(
-							org: {
-								organization: { imageUrl: string; name: string; id: string };
-							},
-							index: number
-						) => (
-							<SidebarMenuItem key={index}>
-								<AccordionItem value={`${index}`}>
-									<AccordionTrigger
-										className={cn(
-											"flex w-full items-center my-1",
-											org.organization.id === organization.id
-												? open
-													? "bg-neutral-950 border-[1px] border-white"
-													: ""
-												: "",
-											open ? "p-3" : ""
-										)}
+			<Accordion type="single" collapsible className="mt-4">
+				{data.map(
+					(
+						org: {
+							organization: { imageUrl: string; name: string; id: string };
+						},
+						index: number
+					) => (
+						<SidebarMenuItem key={index}>
+							<AccordionItem value={`${index}`}>
+								<AccordionTrigger
+									className={cn(
+										"flex w-full items-center my-1",
+										org.organization.id === organization.id
+											? open
+												? "bg-neutral-950 border-[1px] border-white"
+												: ""
+											: "",
+										open ? "p-3" : ""
+									)}
+								>
+									<Suspense
+										fallback={
+											<Skeleton>
+												<div className="flex w-full items-center">
+													<div className="size-[34px]" />
+													<Title title={""} />
+												</div>
+											</Skeleton>
+										}
 									>
-										<Suspense
-											fallback={
-												<Skeleton>
-													<div className="flex w-full items-center">
-														<div className="size-[34px]" />
-														<Title title={""} />
-													</div>
-												</Skeleton>
-											}
-										>
-											<Image
-												src={org.organization.imageUrl}
-												alt="org"
-												height={40}
-												width={40}
+										<Image
+											src={org.organization.imageUrl}
+											alt="org"
+											height={40}
+											width={40}
+											className={cn(
+												"flex size-[40px]",
+												organization.id === org.organization.id &&
+													!open &&
+													" border-2 border-white p-[2px]"
+											)}
+										/>
+										<Title title={org.organization.name} />
+									</Suspense>
+								</AccordionTrigger>
+								<AccordionContent>
+									<ol>
+										{items.map((item, index) => (
+											<li
+												key={index}
 												className={cn(
-													"flex size-[40px]",
-													organization.id === org.organization.id &&
-														!open &&
-														" border-2 border-white p-[2px]"
+													`w-full flex justify-start items-center gap-4 p-2`
 												)}
-											/>
-											<Title title={org.organization.name} />
-										</Suspense>
-									</AccordionTrigger>
-									<AccordionContent>
-										<ol>
-											{items.map((item, index) => (
-												<li
-													key={index}
+											>
+												<Link
+													href={`/org/${org.organization.id}/${item.url}`}
+													onClick={() => {
+														setActive({ organization: org.organization.id });
+													}}
 													className={cn(
-														`w-full flex justify-start items-center gap-4 p-2`
+														`flex gap-4 size-full hover:bg-accent rounded-lg`,
+														open
+															? "p-2 pl-3"
+															: "p-1 py-2 justify-center items-center",
+														org.organization.id === pathname.split("/")[2] &&
+															current === item.slug &&
+															"bg-neutral-300 text-black hover:bg-accent-foreground"
 													)}
 												>
-													<Link
-														href={`/org/${org.organization.id}/${item.url}`}
-														onClick={() => {
-															setActive({ organization: org.organization.id });
-														}}
-														className={cn(
-															`flex gap-4 size-full hover:bg-accent rounded-lg`,
-															open
-																? "p-2 pl-3"
-																: "p-1 py-2 justify-center items-center",
-															org.organization.id === pathname.split("/")[2] &&
-																current === item.slug &&
-																"bg-neutral-300 text-black hover:bg-accent-foreground"
-														)}
-													>
-														<item.icon
-															className={`flex justify-center items-center h-6 w-6`}
-														/>
-														<p className={open ? "" : "hidden"}>{item.title}</p>
-													</Link>
-												</li>
-											))}
-										</ol>
-									</AccordionContent>
-								</AccordionItem>
-							</SidebarMenuItem>
-						)
-					)}
-				</Accordion>
-			</ViewTransition>
+													<item.icon
+														className={`flex justify-center items-center h-6 w-6`}
+													/>
+													<p className={open ? "" : "hidden"}>{item.title}</p>
+												</Link>
+											</li>
+										))}
+									</ol>
+								</AccordionContent>
+							</AccordionItem>
+						</SidebarMenuItem>
+					)
+				)}
+			</Accordion>
 		</Suspense>
 	);
 };

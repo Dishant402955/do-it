@@ -84,12 +84,6 @@ const Navbar = ({ boardId, boardTitle, orgId }: NavbarProps) => {
 								</div>
 							</RenameBoardButton>
 						</DropdownMenuItem>
-						<DropdownMenuItem>
-							<div className="flex items-center space-x-3">
-								<CopyIcon />
-								<p>Copy</p>
-							</div>
-						</DropdownMenuItem>
 						<DropdownMenuItem
 							onSelect={() => requestAnimationFrame(() => setOpenAlert(true))}
 						>

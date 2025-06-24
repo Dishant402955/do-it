@@ -5,7 +5,6 @@ import Image from "next/image";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import { Skeleton } from "./ui/skeleton";
-import { unstable_ViewTransition as ViewTransition } from "react";
 
 const Org = () => {
 	const { organization, isLoaded } = useOrganization();
@@ -52,20 +51,13 @@ const Org = () => {
 				</Skeleton>
 			}
 		>
-			<ViewTransition>
-				<div className="w-full flex gap-4 items-center">
-					<Image
-						src={organization?.imageUrl}
-						alt="org"
-						height={50}
-						width={50}
-					/>
-					<div className="flex flex-col justify-between h-full">
-						<p className="text-lg">{organization.name}</p>
-						<p className="text-sm font-bold">{plan}</p>
-					</div>
+			<div className="w-full flex gap-4 items-center">
+				<Image src={organization?.imageUrl} alt="org" height={50} width={50} />
+				<div className="flex flex-col justify-between h-full">
+					<p className="text-lg">{organization.name}</p>
+					<p className="text-sm font-bold">{plan}</p>
 				</div>
-			</ViewTransition>
+			</div>
 		</Suspense>
 	);
 };

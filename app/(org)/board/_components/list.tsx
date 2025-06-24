@@ -7,7 +7,6 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
-	CopyIcon,
 	FileTextIcon,
 	MinusIcon,
 	MoreHorizontalIcon,
