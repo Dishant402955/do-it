@@ -1,3 +1,5 @@
+"use client";
+
 import { CreateCardForm } from "@/components/forms/create-card-form";
 import {
 	Dialog,
@@ -6,11 +8,18 @@ import {
 	DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "../ui/button";
-import React from "react";
+import React, { useState } from "react";
 
-const CreateCardButton = ({ children }: { children?: React.ReactNode }) => {
+const CreateCardButton = ({
+	children,
+	listId,
+}: {
+	children?: React.ReactNode;
+	listId: string;
+}) => {
+	const [open, setOpen] = useState(false);
 	return (
-		<Dialog>
+		<Dialog open={open} onOpenChange={setOpen}>
 			<DialogTrigger asChild>
 				<span>
 					{children}
@@ -20,7 +29,7 @@ const CreateCardButton = ({ children }: { children?: React.ReactNode }) => {
 
 			<DialogContent className="flex flex-col justify-center items-center w-72 space-y-4">
 				<DialogTitle>Create New Card</DialogTitle>
-				<CreateCardForm />
+				<CreateCardForm onSuccess={() => setOpen(false)} listId={listId} />
 			</DialogContent>
 		</Dialog>
 	);

@@ -248,7 +248,7 @@ const List = ({
 									</div>
 								) : null}
 								<div className="w-full flex">
-									<CreateCardButton>
+									<CreateCardButton listId={id}>
 										<Button>+ Add Card</Button>
 									</CreateCardButton>
 								</div>

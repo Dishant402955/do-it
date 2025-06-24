@@ -2,7 +2,7 @@
 
 import { db } from "@/db/index";
 import { card } from "@/db/schema";
-import { desc, eq } from "drizzle-orm";
+import { and, desc, eq } from "drizzle-orm";
 
 export const createCard = async ({
 	title,
@@ -33,9 +33,7 @@ export const createCard = async ({
 	try {
 		const res = await db.insert(card).values(item);
 
-		if (res.rowCount > 0) {
-			return { success: "Card Created" };
-		}
+		return { success: "Card Created" };
 	} catch (error) {
 		return { error: "Error Creating Card" };
 	}
@@ -101,5 +99,31 @@ export const getCardsByListId = async ({ listId }: { listId: string }) => {
 		}
 	} catch (error) {
 		return { error: "Error retrieving Cards" };
+	}
+};
+
+export const cardAlreadyExists = async ({
+	title,
+	listId,
+}: {
+	title: string;
+	listId: string;
+}) => {
+	try {
+		const res = await db
+			.select()
+			.from(card)
+			.where(and(eq(card.title, title), eq(card.listId, listId)));
+
+		if (res.length > 0) {
+			return { success: "Done", data: { exists: true } };
+		}
+		if (res.length === 0) {
+			return { success: "Done", data: { exists: false } };
+		}
+
+		return { error: "Something went Wrong!" };
+	} catch (error) {
+		return { error: "Something went wrong!" };
 	}
 };
