@@ -34,6 +34,8 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from "@/components/ui/dialog";
+import { updateCardListId } from "@/db/crud/card.crud";
+import { cn } from "@/lib/utils";
 
 const List = ({
 	data,
@@ -63,9 +65,14 @@ const List = ({
 	const [openAlertCardDelete, setOpenAlertCardDelete] = useState(false);
 	const [isLoadingList, startTransitionList] = useTransition();
 	const router = useRouter();
+	const [dragOverListId, setDragOverListId] = useState<string | null>(null);
 
 	if (isLoadingList) {
-		return <Loader />;
+		return (
+			<div className="h-full w-full flex justify-center items-center">
+				<Loader />
+			</div>
+		);
 	}
 	const handleDeleteList = (id: string) => {
 		startTransitionList(async () => {
@@ -109,8 +116,40 @@ const List = ({
 				? data.map(({ title, id, cards }, index) => {
 						return (
 							<div
-								className="w-64 h-fit flex flex-col justify-center items-center bg-neutral-800 py-4 px-2 space-y-2"
+								className={cn(
+									"w-64 h-fit flex flex-col justify-center items-center bg-neutral-800 py-4 px-2 space-y-2",
+									dragOverListId === id
+										? "bg-neutral-700 border-2 border-blue-500 shadow-lg scale-[1.02]"
+										: "bg-neutral-800"
+								)}
 								key={index}
+								onDragOver={(e) => {
+									e.preventDefault();
+									setDragOverListId(id);
+								}}
+								onDragLeave={() => {
+									setDragOverListId(null);
+								}}
+								onDrop={async (e) => {
+									e.preventDefault();
+									setDragOverListId(null);
+									const cardId = e.dataTransfer.getData("text/plain");
+									const targetListId = id;
+
+									if (!cardId || !targetListId) return;
+
+									const res = await updateCardListId({
+										id: cardId,
+										listId: targetListId,
+										boardId,
+									});
+									if (res.success) {
+										toast.success("Card moved!");
+										router.refresh();
+									} else {
+										toast.error("Failed to move card");
+									}
+								}}
 							>
 								<div className="w-full flex justify-between items-center px-2 mt-1 mb-4">
 									<p className="text-[1.2rem] font-bold">{title}</p>
@@ -191,91 +230,95 @@ const List = ({
 												index: number
 											) => {
 												return (
-													<Dialog key={index}>
-														<DialogTrigger asChild>
-															<div
-																className="w-full flex justify-between items-center my-1 bg-neutral-900 rounded-lg p-3 z-0"
-																key={index}
-															>
+													<div
+														className="w-full flex justify-between items-center my-1 bg-neutral-900 rounded-lg p-3 z-0"
+														key={index}
+														draggable
+														onDragStart={(e) => {
+															e.dataTransfer.setData("text/plain", card.id); // store card ID
+														}}
+													>
+														<Dialog key={index}>
+															<DialogTrigger>
 																<p>{card.title}</p>
-																<div className="flex justify-center items-center gap-x-4 z-10">
-																	<DropdownMenu>
-																		<DropdownMenuTrigger>
-																			<MoreHorizontalIcon />
-																		</DropdownMenuTrigger>
-																		<DropdownMenuContent>
-																			<DialogTitle></DialogTitle>
-																			<DropdownMenuItem
-																				onSelect={(e) => {
-																					e.preventDefault();
-																				}}
-																			>
-																				<RenameCardButton
-																					id={card.id}
-																					initialTitle={card.title}
-																					listId={card.listId}
-																				>
-																					<div className="w-full  flex justify-start items-center space-x-3">
-																						<FileTextIcon />
-																						<p>Rename</p>
-																					</div>
-																				</RenameCardButton>
-																			</DropdownMenuItem>
-																			<DropdownMenuItem
-																				className="w-full"
-																				onSelect={() => {
-																					requestAnimationFrame(() =>
-																						setOpenAlertCardDelete(true)
-																					);
-																				}}
-																			>
-																				<div className="w-full  flex justify-start items-center space-x-3">
-																					<Trash2Icon />
-																					<p>Delete</p>
-																				</div>
-																			</DropdownMenuItem>
-																		</DropdownMenuContent>
-																	</DropdownMenu>
-																	<AlertDialog
-																		open={openAlertCardDelete}
-																		onOpenChange={setOpenAlertCardDelete}
+															</DialogTrigger>
+															<DialogContent className="w-96">
+																<DialogTitle></DialogTitle>
+																<div className="flex flex-col w-full gap-4">
+																	<div className="flex w-full items-center justify-center text-2xl">
+																		<p>{card.title}</p>
+																	</div>
+																	<div className="flex items-center gap-2">
+																		<MinusIcon className="size-5" />{" "}
+																		<p>{card.description}</p>
+																	</div>
+																</div>
+															</DialogContent>
+														</Dialog>
+
+														<div className="flex justify-center items-center gap-x-4 z-10">
+															<DropdownMenu>
+																<DropdownMenuTrigger>
+																	<MoreHorizontalIcon />
+																</DropdownMenuTrigger>
+																<DropdownMenuContent>
+																	<DropdownMenuItem
+																		onSelect={(e) => {
+																			e.preventDefault();
+																		}}
 																	>
-																		<AlertDialogContent className="w-96">
-																			<AlertDialogTitle></AlertDialogTitle>
-																			Do you Really Want to delete this?
-																			<AlertDialogAction asChild>
-																				<Button
-																					onClick={() => handleDeleteCard(id)}
-																				>
-																					Delete
-																				</Button>
-																			</AlertDialogAction>
-																			<AlertDialogCancel asChild>
-																				<Button
-																					onClick={handleCancleDeleteCard}
-																					variant={"secondary"}
-																				>
-																					Cancel
-																				</Button>
-																			</AlertDialogCancel>
-																		</AlertDialogContent>
-																	</AlertDialog>
-																</div>
-															</div>
-														</DialogTrigger>
-														<DialogContent className="w-96">
-															<DialogTitle></DialogTitle>
-															<div className="flex flex-col w-full gap-4">
-																<div className="flex w-full items-center justify-center text-2xl">
-																	<p>{card.title}</p>
-																</div>
-																<div className="flex items-center gap-2">
-																	<MinusIcon className="size-5" />{" "}
-																	<p>{card.description}</p>
-																</div>
-															</div>
-														</DialogContent>
-													</Dialog>
+																		<RenameCardButton
+																			id={card.id}
+																			initialTitle={card.title}
+																			listId={card.listId}
+																		>
+																			<div className="w-full  flex justify-start items-center space-x-3">
+																				<FileTextIcon />
+																				<p>Rename</p>
+																			</div>
+																		</RenameCardButton>
+																	</DropdownMenuItem>
+																	<DropdownMenuItem
+																		className="w-full"
+																		onSelect={() => {
+																			requestAnimationFrame(() =>
+																				setOpenAlertCardDelete(true)
+																			);
+																		}}
+																	>
+																		<div className="w-full  flex justify-start items-center space-x-3">
+																			<Trash2Icon />
+																			<p>Delete</p>
+																		</div>
+																	</DropdownMenuItem>
+																</DropdownMenuContent>
+															</DropdownMenu>
+															<AlertDialog
+																open={openAlertCardDelete}
+																onOpenChange={setOpenAlertCardDelete}
+															>
+																<AlertDialogContent className="w-96">
+																	<AlertDialogTitle></AlertDialogTitle>
+																	Do you Really Want to delete this?
+																	<AlertDialogAction asChild>
+																		<Button
+																			onClick={() => handleDeleteCard(id)}
+																		>
+																			Delete
+																		</Button>
+																	</AlertDialogAction>
+																	<AlertDialogCancel asChild>
+																		<Button
+																			onClick={handleCancleDeleteCard}
+																			variant={"secondary"}
+																		>
+																			Cancel
+																		</Button>
+																	</AlertDialogCancel>
+																</AlertDialogContent>
+															</AlertDialog>
+														</div>
+													</div>
 												);
 											}
 										)}

@@ -152,3 +152,25 @@ export const UpdateCardTitle = async ({
 		return { error: "Error Updating Card Title" };
 	}
 };
+
+export const updateCardListId = async ({
+	id,
+	listId,
+	boardId,
+}: {
+	listId: string;
+	id: string;
+	boardId: string;
+}) => {
+	try {
+		const res = await db
+			.update(card)
+			.set({ listId, updatedAt: new Date(Date.now()).toDateString() })
+			.where(eq(card.id, id));
+
+		revalidatePath(`/board/${boardId}`);
+		return { success: "Card's listId Updated" };
+	} catch (error) {
+		return { error: "Error Updating Card" };
+	}
+};
