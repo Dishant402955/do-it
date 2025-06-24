@@ -125,7 +125,11 @@ const List = ({
 														e.preventDefault();
 													}}
 												>
-													<RenameListButton>
+													<RenameListButton
+														id={id}
+														boardId={boardId}
+														initialTitle={title}
+													>
 														<div className="w-full  flex justify-start items-center space-x-3">
 															<FileTextIcon />
 															<p>Rename</p>
@@ -206,7 +210,11 @@ const List = ({
 																					e.preventDefault();
 																				}}
 																			>
-																				<RenameCardButton>
+																				<RenameCardButton
+																					id={card.id}
+																					initialTitle={card.title}
+																					listId={card.listId}
+																				>
 																					<div className="w-full  flex justify-start items-center space-x-3">
 																						<FileTextIcon />
 																						<p>Rename</p>

@@ -68,9 +68,7 @@ export const UpdateListTitle = async ({
 			.set({ title, updatedAt: new Date(Date.now()).toDateString() })
 			.where(eq(list.id, id));
 
-		if (res.rowCount >= 0) {
-			return { success: "List Title Updated" };
-		}
+		return { success: "List Title Updated" };
 	} catch (error) {
 		return { error: "Error Updating List Title" };
 	}

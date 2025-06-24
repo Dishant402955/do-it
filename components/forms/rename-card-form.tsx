@@ -15,28 +15,73 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
-import { useTransition } from "react";
+import { useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
+import { cardAlreadyExists, UpdateCardTitle } from "@/db/crud/card.crud";
 
 const formSchema = z.object({
 	title: z.string().min(1, { message: "Title is required!" }).max(100),
 });
 
-export function RenameCardForm() {
+type Props = {
+	listId: string;
+	initialTitle: string;
+	cardId: string;
+	onSuccess: () => void;
+};
+
+export function RenameCardForm({
+	cardId,
+	initialTitle,
+	listId,
+	onSuccess,
+}: Props) {
 	// const [cardTitle, setCardTitle] = useState("");
 
 	const [isLoading, startTransition] = useTransition();
+	const [error, setError] = useState<undefined | string>();
+	const router = useRouter();
 
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
 			// title: cardTitle,
-			title: "",
+			title: initialTitle,
 		},
 	});
 
 	function onSubmit(values: z.infer<typeof formSchema>) {
-		startTransition(() => {
-			toast.success(`Card ${values.title} Renamed.`);
+		startTransition(async () => {
+			setError(undefined);
+
+			if (values.title === initialTitle) {
+				onSuccess();
+				toast.success(`Card renamed to "${values.title}"`);
+				return;
+			}
+
+			const exists = await cardAlreadyExists({ title: values.title, listId });
+
+			if (exists.error) {
+				toast.error(exists.error);
+				return;
+			}
+			if (exists.success && exists.data.exists) {
+				setError("Card title is already taken!");
+				toast.error("Card title is already taken");
+				return;
+			}
+
+			const res = await UpdateCardTitle({ title: values.title, id: cardId });
+
+			if (res.error) {
+				toast.error(`Error Renaming Card`);
+				return;
+			} else {
+				onSuccess();
+				router.refresh();
+				toast.success(`Card ${values.title} renamed.`);
+			}
 		});
 	}
 
@@ -58,6 +103,7 @@ export function RenameCardForm() {
 								/>
 							</FormControl>
 							<FormMessage />
+							{error ? <p className="bg-rose-400">{error}</p> : null}
 						</FormItem>
 					)}
 					disabled={isLoading}

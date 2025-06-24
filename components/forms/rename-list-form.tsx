@@ -15,28 +15,73 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
-import { useTransition } from "react";
+import { useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
+import { listAlreadyExists, UpdateListTitle } from "@/db/crud/list.crud";
 
 const formSchema = z.object({
 	title: z.string().min(1, { message: "Title is required!" }).max(100),
 });
 
-export function RenameListForm() {
+type Props = {
+	boardId: string;
+	initialTitle: string;
+	listId: string;
+	onSuccess: () => void;
+};
+
+export function RenameListForm({
+	boardId,
+	initialTitle,
+	listId,
+	onSuccess,
+}: Props) {
 	// const [listTitle, setListTitle] = useState();
 
 	const [isLoading, startTransition] = useTransition();
+	const [error, setError] = useState<undefined | string>();
+	const router = useRouter();
 
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
 			// title: listTitle,
-			title: "",
+			title: initialTitle,
 		},
 	});
 
 	function onSubmit(values: z.infer<typeof formSchema>) {
-		startTransition(() => {
-			toast.success(`List ${values.title} Renamed.`);
+		startTransition(async () => {
+			setError(undefined);
+
+			if (values.title === initialTitle) {
+				onSuccess();
+				toast.success(`List renamed to "${values.title}"`);
+				return;
+			}
+
+			const exists = await listAlreadyExists({ title: values.title, boardId });
+
+			if (exists.error) {
+				toast.error(exists.error);
+				return;
+			}
+			if (exists.success && exists.data.exists) {
+				setError("List title is already taken!");
+				toast.error("List title is already taken");
+				return;
+			}
+
+			const res = await UpdateListTitle({ title: values.title, id: listId });
+
+			if (res.error) {
+				toast.error(`Error Renaming List`);
+				return;
+			} else {
+				onSuccess();
+				router.refresh();
+				toast.success(`List ${values.title} renamed.`);
+			}
 		});
 	}
 
@@ -58,6 +103,7 @@ export function RenameListForm() {
 								/>
 							</FormControl>
 							<FormMessage />
+							{error ? <p className="bg-rose-400">{error}</p> : null}
 						</FormItem>
 					)}
 					disabled={isLoading}

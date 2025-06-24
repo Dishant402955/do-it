@@ -6,11 +6,20 @@ import {
 	DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "../ui/button";
-import React from "react";
+import React, { useState } from "react";
 
-const RenameCardButton = ({ children }: { children?: React.ReactNode }) => {
+type Props = {
+	id: string;
+	initialTitle: string;
+	children?: React.ReactNode;
+	listId: string;
+};
+
+const RenameCardButton = ({ children, id, initialTitle, listId }: Props) => {
+	const [open, setOpen] = useState(false);
+
 	return (
-		<Dialog>
+		<Dialog open={open} onOpenChange={setOpen}>
 			<DialogTrigger asChild>
 				<span>
 					{children}
@@ -20,7 +29,12 @@ const RenameCardButton = ({ children }: { children?: React.ReactNode }) => {
 
 			<DialogContent className="flex flex-col justify-center items-center w-72 space-y-4">
 				<DialogTitle>Rename Card</DialogTitle>
-				<RenameCardForm />
+				<RenameCardForm
+					initialTitle={initialTitle}
+					cardId={id}
+					listId={listId}
+					onSuccess={() => setOpen(false)}
+				/>
 			</DialogContent>
 		</Dialog>
 	);

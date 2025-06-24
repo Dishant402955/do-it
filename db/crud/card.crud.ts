@@ -133,3 +133,22 @@ export const cardAlreadyExists = async ({
 		return { error: "Something went wrong!" };
 	}
 };
+
+export const UpdateCardTitle = async ({
+	title,
+	id,
+}: {
+	title: string;
+	id: string;
+}) => {
+	try {
+		const res = await db
+			.update(card)
+			.set({ title, updatedAt: new Date(Date.now()).toDateString() })
+			.where(eq(card.id, id));
+
+		return { success: "Card Title Updated" };
+	} catch (error) {
+		return { error: "Error Updating Card Title" };
+	}
+};
