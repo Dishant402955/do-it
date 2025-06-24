@@ -49,7 +49,7 @@ export const DeleteList = async ({
 		const res = await db.delete(list).where(eq(list.id, id));
 
 		revalidatePath(`/board/${boardId}`);
-		return { success: "List Created" };
+		return { success: "List Deleted" };
 	} catch (error) {
 		return { error: "Error Deleting Document" };
 	}

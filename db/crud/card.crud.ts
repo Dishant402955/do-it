@@ -3,6 +3,7 @@
 import { db } from "@/db/index";
 import { card } from "@/db/schema";
 import { and, desc, eq } from "drizzle-orm";
+import { revalidatePath } from "next/cache";
 
 export const createCard = async ({
 	title,
@@ -39,13 +40,18 @@ export const createCard = async ({
 	}
 };
 
-export const deleteCard = async ({ id }: { id: string }) => {
+export const deleteCard = async ({
+	id,
+	boardId,
+}: {
+	id: string;
+	boardId: string;
+}) => {
 	try {
 		const res = await db.delete(card).where(eq(card.id, id));
 
-		if (res.rowCount >= 0) {
-			return { success: "Card Deleted" };
-		}
+		revalidatePath(`/board/${boardId}`);
+		return { success: "Card Deleted" };
 	} catch (error) {
 		return { error: "Error Deleting Card" };
 	}

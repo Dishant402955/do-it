@@ -27,7 +27,7 @@ const CreateCardButton = ({
 				</span>
 			</DialogTrigger>
 
-			<DialogContent className="flex flex-col justify-center items-center w-72 space-y-4">
+			<DialogContent className="flex flex-col justify-center items-center w-[90%] space-y-4">
 				<DialogTitle>Create New Card</DialogTitle>
 				<CreateCardForm onSuccess={() => setOpen(false)} listId={listId} />
 			</DialogContent>

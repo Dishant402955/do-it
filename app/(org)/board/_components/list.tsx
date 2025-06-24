@@ -9,6 +9,7 @@ import {
 import {
 	CopyIcon,
 	FileTextIcon,
+	MinusIcon,
 	MoreHorizontalIcon,
 	Trash2Icon,
 } from "lucide-react";
@@ -26,7 +27,14 @@ import CreateCardButton from "@/components/wrappers/create-card-button";
 import RenameListButton from "@/components/wrappers/rename-list-button";
 import RenameCardButton from "@/components/wrappers/rename-card-button";
 import { DeleteList } from "@/db/crud/list.crud";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
+import Loader from "@/components/loader";
+import {
+	Dialog,
+	DialogContent,
+	DialogTitle,
+	DialogTrigger,
+} from "@/components/ui/dialog";
 
 const List = ({
 	data,
@@ -57,6 +65,9 @@ const List = ({
 	const [isLoadingList, startTransitionList] = useTransition();
 	const router = useRouter();
 
+	if (isLoadingList) {
+		return <Loader />;
+	}
 	const handleDeleteList = (id: string) => {
 		startTransitionList(async () => {
 			const res = await DeleteList({ boardId, id });
@@ -75,9 +86,18 @@ const List = ({
 		setOpenAlertListDelete(false);
 	};
 
-	const handleDeleteCard = () => {
-		toast.success("Card Deleted");
-		setOpenAlertCardDelete(false);
+	const handleDeleteCard = (id: string) => {
+		startTransitionList(async () => {
+			const res = await DeleteList({ boardId, id });
+
+			if (res.error) {
+				toast.error("Error Deleting Card");
+				return;
+			}
+			toast.success("Card Deleted");
+			setOpenAlertCardDelete(false);
+			router.refresh();
+		});
 	};
 	const handleCancleDeleteCard = () => {
 		toast.info("Card Deletion Cancelled");
@@ -90,7 +110,7 @@ const List = ({
 				? data.map(({ title, id, cards }, index) => {
 						return (
 							<div
-								className="w-64 h-fit max-h-[40%] flex flex-col justify-center items-center bg-neutral-800 py-4 px-2 space-y-2"
+								className="w-64 h-fit flex flex-col justify-center items-center bg-neutral-800 py-4 px-2 space-y-2"
 								key={index}
 							>
 								<div className="w-full flex justify-between items-center px-2 mt-1 mb-4">
@@ -112,12 +132,6 @@ const List = ({
 															<p>Rename</p>
 														</div>
 													</RenameListButton>
-												</DropdownMenuItem>
-												<DropdownMenuItem>
-													<div className="w-full  flex justify-start items-center space-x-3">
-														<CopyIcon />
-														<p>Copy</p>
-													</div>
 												</DropdownMenuItem>
 												<DropdownMenuItem
 													className="w-full"
@@ -159,7 +173,7 @@ const List = ({
 									</div>
 								</div>
 								{cards.length > 0 ? (
-									<div className="w-full space-y-2 flex flex-col justify-start items-center py-2 px-4 bg-neutral-900 rounded-lg">
+									<div className="w-full flex flex-col justify-start items-center rounded-lg px-2">
 										{cards.map(
 											(
 												card: {
@@ -174,80 +188,93 @@ const List = ({
 												index: number
 											) => {
 												return (
-													<div
-														className="w-full flex justify-between items-center my-1	"
-														key={index}
-													>
-														<p>{card.title}</p>
-														<div className="flex justify-center items-center gap-x-4">
-															<DropdownMenu>
-																<DropdownMenuTrigger>
-																	<MoreHorizontalIcon />
-																</DropdownMenuTrigger>
-																<DropdownMenuContent>
-																	<DropdownMenuItem
-																		onSelect={(e) => {
-																			e.preventDefault();
-																		}}
-																	>
-																		<RenameCardButton>
-																			<div className="w-full  flex justify-start items-center space-x-3">
-																				<FileTextIcon />
-																				<p>Rename</p>
-																			</div>
-																		</RenameCardButton>
-																	</DropdownMenuItem>
-																	<DropdownMenuItem>
-																		<div className="w-full  flex justify-start items-center space-x-3">
-																			<CopyIcon />
-																			<p>Copy</p>
-																		</div>
-																	</DropdownMenuItem>
-																	<DropdownMenuItem
-																		className="w-full"
-																		onSelect={() => {
-																			requestAnimationFrame(() =>
-																				setOpenAlertCardDelete(true)
-																			);
-																		}}
-																	>
-																		<div className="w-full  flex justify-start items-center space-x-3">
-																			<Trash2Icon />
-																			<p>Delete</p>
-																		</div>
-																	</DropdownMenuItem>
-																</DropdownMenuContent>
-															</DropdownMenu>
-															<AlertDialog
-																open={openAlertCardDelete}
-																onOpenChange={setOpenAlertCardDelete}
+													<Dialog key={index}>
+														<DialogTrigger asChild>
+															<div
+																className="w-full flex justify-between items-center my-1 bg-neutral-900 rounded-lg p-3 z-0"
+																key={index}
 															>
-																<AlertDialogContent className="w-96">
-																	<AlertDialogTitle></AlertDialogTitle>
-																	Do you Really Want to delete this?
-																	<AlertDialogAction asChild>
-																		<Button onClick={handleDeleteCard}>
-																			Delete
-																		</Button>
-																	</AlertDialogAction>
-																	<AlertDialogCancel asChild>
-																		<Button
-																			onClick={handleCancleDeleteCard}
-																			variant={"secondary"}
-																		>
-																			Cancel
-																		</Button>
-																	</AlertDialogCancel>
-																</AlertDialogContent>
-															</AlertDialog>
-														</div>
-													</div>
+																<p>{card.title}</p>
+																<div className="flex justify-center items-center gap-x-4 z-10">
+																	<DropdownMenu>
+																		<DropdownMenuTrigger>
+																			<MoreHorizontalIcon />
+																		</DropdownMenuTrigger>
+																		<DropdownMenuContent>
+																			<DialogTitle></DialogTitle>
+																			<DropdownMenuItem
+																				onSelect={(e) => {
+																					e.preventDefault();
+																				}}
+																			>
+																				<RenameCardButton>
+																					<div className="w-full  flex justify-start items-center space-x-3">
+																						<FileTextIcon />
+																						<p>Rename</p>
+																					</div>
+																				</RenameCardButton>
+																			</DropdownMenuItem>
+																			<DropdownMenuItem
+																				className="w-full"
+																				onSelect={() => {
+																					requestAnimationFrame(() =>
+																						setOpenAlertCardDelete(true)
+																					);
+																				}}
+																			>
+																				<div className="w-full  flex justify-start items-center space-x-3">
+																					<Trash2Icon />
+																					<p>Delete</p>
+																				</div>
+																			</DropdownMenuItem>
+																		</DropdownMenuContent>
+																	</DropdownMenu>
+																	<AlertDialog
+																		open={openAlertCardDelete}
+																		onOpenChange={setOpenAlertCardDelete}
+																	>
+																		<AlertDialogContent className="w-96">
+																			<AlertDialogTitle></AlertDialogTitle>
+																			Do you Really Want to delete this?
+																			<AlertDialogAction asChild>
+																				<Button
+																					onClick={() => handleDeleteCard(id)}
+																				>
+																					Delete
+																				</Button>
+																			</AlertDialogAction>
+																			<AlertDialogCancel asChild>
+																				<Button
+																					onClick={handleCancleDeleteCard}
+																					variant={"secondary"}
+																				>
+																					Cancel
+																				</Button>
+																			</AlertDialogCancel>
+																		</AlertDialogContent>
+																	</AlertDialog>
+																</div>
+															</div>
+														</DialogTrigger>
+														<DialogContent className="w-96">
+															<DialogTitle></DialogTitle>
+															<div className="flex flex-col w-full gap-4">
+																<div className="flex w-full items-center justify-center text-2xl">
+																	<p>{card.title}</p>
+																</div>
+																<div className="flex items-center gap-2">
+																	<MinusIcon className="size-5" />{" "}
+																	<p>{card.description}</p>
+																</div>
+															</div>
+														</DialogContent>
+													</Dialog>
 												);
 											}
 										)}
 									</div>
 								) : null}
-								<div className="w-full flex">
+								<div className="w-full flex mt-2 ml-4">
 									<CreateCardButton listId={id}>
 										<Button>+ Add Card</Button>
 									</CreateCardButton>
