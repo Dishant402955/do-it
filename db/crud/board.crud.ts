@@ -2,6 +2,7 @@
 
 import { db } from "@/db/index";
 import { board } from "@/db/schema";
+import { auth } from "@clerk/nextjs/server";
 import { and, count, eq, exists } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
@@ -15,6 +16,33 @@ export const createBoard = async ({
 	if (!orgId || !title) {
 		return { success: false, message: "Invalid Data" };
 	}
+
+	const { has } = await auth();
+
+	const isFree = has({ plan: "free_org" });
+	const isPro = has({ plan: "pro_tier" });
+	const isUnlimited = has({ plan: "unlimited" });
+
+	const boardCount = (
+		await db.select().from(board).where(eq(board.orgId, orgId))
+	).length;
+
+	if (isFree) {
+		if (boardCount + 1 > 5) {
+			return { error: "limit reached", limitReached: true };
+		}
+	}
+
+	if (isPro) {
+		if (boardCount + 1 > 25) {
+			return { error: "limit reached", limitReached: true };
+		}
+	}
+
+	if (isUnlimited) {
+		1;
+	}
+
 	const item = {
 		orgId,
 		title,
@@ -29,7 +57,10 @@ export const createBoard = async ({
 
 		const newBoard = await getBoardByTitleAndOrgId({ title, orgId });
 
-		return { success: "Board Created", data: { board: newBoard?.data?.board } };
+		return {
+			success: "Board Created",
+			data: { board: newBoard?.data?.board },
+		};
 	} catch (error) {
 		return { error: "Error Creating Board" };
 	}
@@ -152,5 +183,15 @@ export const boardAlreadyExists = async ({
 		return { error: "Something went Wrong!" };
 	} catch (error) {
 		return { error: "Something went wrong!" };
+	}
+};
+
+export const getBoardsCount = async ({ orgId }: { orgId: string }) => {
+	try {
+		const res = await db.select().from(board).where(eq(board.orgId, orgId));
+
+		return { success: "Retrieved Board", data: { count: res.length } };
+	} catch (error) {
+		return { error: "Error Retrieving Board" };
 	}
 };

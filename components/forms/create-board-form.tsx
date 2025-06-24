@@ -16,8 +16,15 @@ import {
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { useState, useTransition } from "react";
-import { boardAlreadyExists, createBoard } from "@/db/crud/board.crud";
+import {
+	boardAlreadyExists,
+	createBoard,
+	getBoardsCount,
+} from "@/db/crud/board.crud";
 import { redirect } from "next/navigation";
+import { Dialog, DialogContent, DialogTitle } from "../ui/dialog";
+import { useAuth } from "@clerk/nextjs";
+import Link from "next/link";
 
 const formSchema = z.object({
 	title: z.string().min(1, { message: "Title is required!" }).max(100),
@@ -26,6 +33,8 @@ const formSchema = z.object({
 export function CreateBoardForm({ orgId, onSuccess }: any) {
 	const [isLoading, startTransition] = useTransition();
 	const [error, setError] = useState<string | undefined>();
+	const [openUpgrade, setOpenUpgrade] = useState(false);
+	const { has } = useAuth();
 
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
@@ -34,9 +43,41 @@ export function CreateBoardForm({ orgId, onSuccess }: any) {
 		},
 	});
 
+	if (!has) {
+		return;
+	}
+
+	const isFree = has({ plan: "free_org" });
+	const isPro = has({ plan: "pro_tier" });
+	const isUnlimited = has({ plan: "unlimited" });
+
 	function onSubmit(values: z.infer<typeof formSchema>) {
 		startTransition(async () => {
 			setError(undefined);
+			const resCount = await getBoardsCount({ orgId });
+
+			if (resCount.error) {
+				toast.error("Something went wrong!");
+				return;
+			}
+
+			if (isFree) {
+				if (resCount.success && resCount.data.count + 1 > 5) {
+					setOpenUpgrade(true);
+					return;
+				}
+			}
+
+			if (isPro) {
+				if (resCount.success && resCount.data.count + 1 > 25) {
+					setOpenUpgrade(true);
+					return;
+				}
+			}
+
+			if (isUnlimited) {
+				1;
+			}
 			const exists = await boardAlreadyExists({ title: values.title, orgId });
 
 			if (exists.error) {
@@ -89,6 +130,18 @@ export function CreateBoardForm({ orgId, onSuccess }: any) {
 					Submit
 				</Button>
 			</form>
+			<Dialog open={openUpgrade} onOpenChange={setOpenUpgrade}>
+				<DialogContent className="w-[40%]  h-fit">
+					<DialogTitle></DialogTitle>
+					<div className="flex flex-col justify-center items-center my-4 mx-1 space-y-1">
+						<p className="text-2xl">You have reached your Boards limit.</p>
+						<p className="text-xl mt-5 mb-1">Upgrade your plan to continue.</p>
+						<Link href={`/org/${orgId}/billings`} className="p-0 mt-1">
+							<Button size={"lg"}>Upgrade</Button>
+						</Link>
+					</div>
+				</DialogContent>
+			</Dialog>
 		</Form>
 	);
 }
