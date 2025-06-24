@@ -34,7 +34,10 @@ const CreateBoardButton = ({ children }: { children?: React.ReactNode }) => {
 				<CreateBoardForm
 					// createBoard={createBoard}
 					orgId={orgId}
-					onSuccess={() => setOpen(false)}
+					onSuccess={() => {
+						setOpen(false);
+					}}
+					onRedirect={() => setOpen(false)}
 				/>
 			</DialogContent>
 		</Dialog>

@@ -231,7 +231,7 @@ const List = ({
 											) => {
 												return (
 													<div
-														className="w-full flex justify-between items-center my-1 bg-neutral-900 rounded-lg p-3 z-0"
+														className="w-full flex justify-between items-center my-1 bg-neutral-900 rounded-lg z-0 px-2 py-2 cursor-grab"
 														key={index}
 														draggable
 														onDragStart={(e) => {
@@ -240,7 +240,9 @@ const List = ({
 													>
 														<Dialog key={index}>
 															<DialogTrigger>
-																<p>{card.title}</p>
+																<p className="cursor-pointer border-[0.1px] px-4 py-1 ml-1 rounded-lg">
+																	{card.title}
+																</p>
 															</DialogTrigger>
 															<DialogContent className="w-96">
 																<DialogTitle></DialogTitle>
@@ -258,7 +260,7 @@ const List = ({
 
 														<div className="flex justify-center items-center gap-x-4 z-10">
 															<DropdownMenu>
-																<DropdownMenuTrigger>
+																<DropdownMenuTrigger className="cursor-pointer border-[0.1px] px-2 py-0 rounded-lg">
 																	<MoreHorizontalIcon />
 																</DropdownMenuTrigger>
 																<DropdownMenuContent>

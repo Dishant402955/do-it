@@ -30,7 +30,7 @@ const formSchema = z.object({
 	title: z.string().min(1, { message: "Title is required!" }).max(100),
 });
 
-export function CreateBoardForm({ orgId, onSuccess }: any) {
+export function CreateBoardForm({ orgId, onSuccess, onRedirect }: any) {
 	const [isLoading, startTransition] = useTransition();
 	const [error, setError] = useState<string | undefined>();
 	const [openUpgrade, setOpenUpgrade] = useState(false);
@@ -104,6 +104,11 @@ export function CreateBoardForm({ orgId, onSuccess }: any) {
 		});
 	}
 
+	const handleUpgradeClick = () => {
+		setOpenUpgrade(false);
+		onRedirect();
+		return redirect(`/org/${orgId}/billings`);
+	};
 	return (
 		<Form {...form}>
 			<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-full">
@@ -129,19 +134,23 @@ export function CreateBoardForm({ orgId, onSuccess }: any) {
 				<Button type="submit" size={"sm"} disabled={isLoading}>
 					Submit
 				</Button>
+				<Dialog open={openUpgrade} onOpenChange={setOpenUpgrade}>
+					<DialogContent className="w-[40%]  h-fit">
+						<DialogTitle></DialogTitle>
+						<div className="flex flex-col justify-center items-center my-4 mx-1 space-y-1">
+							<p className="text-2xl">You have reached your Boards limit.</p>
+							<p className="text-xl mt-5 mb-1">
+								Upgrade your plan to continue.
+							</p>
+							{/* <Link href={`/org/${orgId}/billings`} className="p-0 mt-1"> */}
+							<Button size={"lg"} onClick={handleUpgradeClick}>
+								Upgrade
+							</Button>
+							{/* </Link> */}
+						</div>
+					</DialogContent>
+				</Dialog>
 			</form>
-			<Dialog open={openUpgrade} onOpenChange={setOpenUpgrade}>
-				<DialogContent className="w-[40%]  h-fit">
-					<DialogTitle></DialogTitle>
-					<div className="flex flex-col justify-center items-center my-4 mx-1 space-y-1">
-						<p className="text-2xl">You have reached your Boards limit.</p>
-						<p className="text-xl mt-5 mb-1">Upgrade your plan to continue.</p>
-						<Link href={`/org/${orgId}/billings`} className="p-0 mt-1">
-							<Button size={"lg"}>Upgrade</Button>
-						</Link>
-					</div>
-				</DialogContent>
-			</Dialog>
 		</Form>
 	);
 }

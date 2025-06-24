@@ -9,7 +9,6 @@ import {
 import { Button } from "./ui/button";
 import Orgs from "./orgs";
 import Link from "next/link";
-import { unstable_ViewTransition as ViewTransition } from "react";
 
 export function AppSidebar() {
 	return (
@@ -25,11 +24,9 @@ export function AppSidebar() {
 						</Link>
 					</SidebarGroupLabel>
 					<SidebarGroupContent>
-						<ViewTransition>
-							<SidebarMenu>
-								<Orgs />
-							</SidebarMenu>
-						</ViewTransition>
+						<SidebarMenu>
+							<Orgs />
+						</SidebarMenu>
 					</SidebarGroupContent>
 				</SidebarGroup>
 			</SidebarContent>
