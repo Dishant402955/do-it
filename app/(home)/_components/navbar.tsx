@@ -17,7 +17,7 @@ const Navbar = () => {
 						<Link href={"sign-in"}>
 							<Button variant={"ghost"}>Login</Button>
 						</Link>
-						<Link href={"sign-up"}>
+						<Link href={"sign-up"} className=" max-md:hidden">
 							<Button>Do It for Free!</Button>
 						</Link>
 					</div>

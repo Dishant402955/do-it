@@ -30,7 +30,7 @@ const Page = async () => {
 				<p className="font-bold text-xl">Your Boards</p>
 			</div>
 
-			<div className="grid grid-cols-5 space-y-4 my-8 w-[80%] ml-20">
+			<div className="flex justify-start items-start flex-wrap h-full w-full pt-8 gap-y-4  gap-x-2 max-[620px]:justify-center max-[620px]:items-center">
 				<CreateBoard />
 				{boards ? (
 					boards.map(

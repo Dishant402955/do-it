@@ -7,7 +7,7 @@ const Footer = () => {
 			<div className="flex justify-center items-center h-full ml-2">
 				<Logo />
 			</div>
-			<div className="flex justify-center items-center gap-x-16 pr-10">
+			<div className=" justify-center items-center gap-x-16 pr-10 hidden md:flex">
 				<Link href={"/privacy-policy"}>Privacy Policy</Link>
 				<Link href={"/terms-of-service"}>Terms of Service</Link>
 			</div>

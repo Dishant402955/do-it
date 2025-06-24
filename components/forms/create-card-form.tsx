@@ -103,10 +103,10 @@ export function CreateCardForm({
 					name="description"
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel className="ml-1">Card Title</FormLabel>
+							<FormLabel className="ml-1">Card Description</FormLabel>
 							<FormControl>
 								<Textarea
-									placeholder="Enter Card Title"
+									placeholder="Enter  Card Description"
 									{...field}
 									className="w-full my-1"
 								/>
