@@ -117,7 +117,7 @@ export function CreateCardForm({
 					)}
 					disabled={isLoading}
 				/>
-				<Button type="submit" size={"sm"}>
+				<Button type="submit" size={"sm"} disabled={isLoading}>
 					Submit
 				</Button>
 			</form>

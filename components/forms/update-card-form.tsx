@@ -93,7 +93,7 @@ export function UpdateCardForm({
 					)}
 					disabled={isLoading}
 				/>
-				<Button type="submit" size={"sm"}>
+				<Button type="submit" size={"sm"} disabled={isLoading}>
 					Rename
 				</Button>
 			</form>
