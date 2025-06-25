@@ -10,6 +10,7 @@ import {
 	FileTextIcon,
 	MinusIcon,
 	MoreHorizontalIcon,
+	PencilIcon,
 	Trash2Icon,
 } from "lucide-react";
 import {
@@ -36,6 +37,7 @@ import {
 } from "@/components/ui/dialog";
 import { deleteCard, updateCardListId } from "@/db/crud/card.crud";
 import { cn } from "@/lib/utils";
+import UpdateCardButton from "@/components/wrappers/update-card-button";
 
 const List = ({
 	data,
@@ -117,7 +119,7 @@ const List = ({
 						return (
 							<div
 								className={cn(
-									"w-64 h-fit flex flex-col justify-center items-center bg-neutral-800 py-4 px-2 space-y-2",
+									"w-64 h-fit flex flex-col justify-center items-center bg-neutral-800 py-4 px-2 space-y-2 pb-8",
 									dragOverListId === id
 										? "bg-neutral-700 border-2 border-blue-500 shadow-lg scale-[1.02]"
 										: "bg-neutral-800"
@@ -250,8 +252,7 @@ const List = ({
 																	<div className="flex w-full items-center justify-center text-2xl">
 																		<p>{card.title}</p>
 																	</div>
-																	<div className="flex items-center gap-2">
-																		<MinusIcon className="size-5" />{" "}
+																	<div className="flex items-center gap-2 mt-2">
 																		<p>{card.description}</p>
 																	</div>
 																</div>
@@ -279,6 +280,21 @@ const List = ({
 																				<p>Rename</p>
 																			</div>
 																		</RenameCardButton>
+																	</DropdownMenuItem>
+																	<DropdownMenuItem
+																		onSelect={(e) => {
+																			e.preventDefault();
+																		}}
+																	>
+																		<UpdateCardButton
+																			id={card.id}
+																			initialDescription={card.description}
+																		>
+																			<div className="w-full  flex justify-start items-center space-x-3">
+																				<PencilIcon />
+																				<p>Update</p>
+																			</div>
+																		</UpdateCardButton>
 																	</DropdownMenuItem>
 																	<DropdownMenuItem
 																		className="w-full"

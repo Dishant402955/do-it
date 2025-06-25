@@ -174,3 +174,22 @@ export const updateCardListId = async ({
 		return { error: "Error Updating Card" };
 	}
 };
+
+export const UpdateCardDescription = async ({
+	description = "",
+	id,
+}: {
+	description: string | undefined;
+	id: string;
+}) => {
+	try {
+		const res = await db
+			.update(card)
+			.set({ description, updatedAt: new Date(Date.now()).toDateString() })
+			.where(eq(card.id, id));
+
+		return { success: "Card  Updated" };
+	} catch (error) {
+		return { error: "Error Updating Card " };
+	}
+};

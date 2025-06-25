@@ -13,33 +13,55 @@ import {
 	FormLabel,
 	FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
-import { useTransition } from "react";
+import { useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
+import { UpdateCardDescription } from "@/db/crud/card.crud";
 import { Textarea } from "../ui/textarea";
 
 const formSchema = z.object({
-	title: z.string().min(1, { message: "Title is required!" }).max(100),
 	description: z.optional(z.string()),
 });
 
-export function UpdateCardForm() {
-	// const [cardTitle, setCardTitle] = useState("");
+type Props = {
+	cardId: string;
+	onSuccess: () => void;
+	initialDescription: string | null;
+};
 
+export function UpdateCardForm({
+	cardId,
+	onSuccess,
+	initialDescription,
+}: Props) {
 	const [isLoading, startTransition] = useTransition();
+	const [error, setError] = useState<undefined | string>();
+	const router = useRouter();
 
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			// title: cardTitle,
-			title: "",
-			description: "",
+			description: initialDescription ?? "",
 		},
 	});
 
 	function onSubmit(values: z.infer<typeof formSchema>) {
-		startTransition(() => {
-			toast.success(`Card ${values.title} Renamed.`);
+		startTransition(async () => {
+			setError(undefined);
+
+			const res = await UpdateCardDescription({
+				description: values.description,
+				id: cardId,
+			});
+
+			if (res.error) {
+				toast.error(`Error Updating Card`);
+				return;
+			} else {
+				onSuccess();
+				router.refresh();
+				toast.success(`Card updated.`);
+			}
 		});
 	}
 
@@ -48,33 +70,25 @@ export function UpdateCardForm() {
 			<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-full">
 				<FormField
 					control={form.control}
-					name="title"
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel className="ml-1">Card Title</FormLabel>
-							<FormControl>
-								<Input
-									{...field}
-									className="w-full my-1"
-									// value={cardTitle}
-									// onChange={setCardTitle}
-								/>
-							</FormControl>
-							<FormMessage />
-						</FormItem>
-					)}
-					disabled={isLoading}
-				/>
-				<FormField
-					control={form.control}
 					name="description"
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel className="ml-1">Card Title</FormLabel>
+							<FormLabel className="ml-1">Card Description</FormLabel>
 							<FormControl>
-								<Textarea {...field} />
+								<Textarea
+									placeholder="Enter  Card Description"
+									{...field}
+									className="w-full my-1"
+									aria-autocomplete="both"
+									aria-atomic="true"
+									aria-colcount={50}
+									aria-multiline
+									spellCheck
+									autoComplete="true"
+								/>
 							</FormControl>
 							<FormMessage />
+							{error ? <p className="text-rose-400">{error}</p> : null}
 						</FormItem>
 					)}
 					disabled={isLoading}

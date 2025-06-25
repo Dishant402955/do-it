@@ -21,6 +21,7 @@ import { cardAlreadyExists, UpdateCardTitle } from "@/db/crud/card.crud";
 
 const formSchema = z.object({
 	title: z.string().min(1, { message: "Title is required!" }).max(100),
+	description: z.optional(z.string()),
 });
 
 type Props = {
