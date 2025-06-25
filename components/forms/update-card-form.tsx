@@ -81,10 +81,10 @@ export function UpdateCardForm({
 									className="w-full my-1"
 									aria-autocomplete="both"
 									aria-atomic="true"
-									aria-colcount={50}
 									aria-multiline
 									spellCheck
 									autoComplete="true"
+									aria-colspan={30}
 								/>
 							</FormControl>
 							<FormMessage />
